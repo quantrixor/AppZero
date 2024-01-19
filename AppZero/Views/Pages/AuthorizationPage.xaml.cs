@@ -1,4 +1,6 @@
 ﻿using AppZero.Context;
+using AppZero.Model;
+using AppZero.Settings;
 using AppZero.Views.Pages.AdminPages;
 using AppZero.Views.Pages.EmployePages;
 using System;
@@ -21,6 +23,7 @@ namespace AppZero.Views.Pages
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
+            var logger = new Logger();
             try
             {
                 var currentUser = AppData.db.SignIn.FirstOrDefault(item => item.Username == txbUsername.Text && item.Password == psbPassword.Password);
@@ -28,7 +31,6 @@ namespace AppZero.Views.Pages
                 {
                     switch (currentUser.IDRole)
                     {
-
                         case "A":
                             NavigationService.Navigate(new ViewPage(currentUser.User.FirstOrDefault(item => item.IDSignIn == currentUser.ID)));
                             break;
@@ -38,6 +40,10 @@ namespace AppZero.Views.Pages
                         default:
                             throw new Exception("Неверный логин или пароль!");
                     }
+                }
+                else
+                {
+                    throw new Exception("Неверный логин или пароль!");
                 }
             }
             catch (Exception ex)

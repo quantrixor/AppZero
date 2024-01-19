@@ -13,28 +13,52 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" BorderBrush="Black" BorderThickness="1">
+        <Border Background="{DynamicResource BorderBackgroud}" Grid.Row="0" BorderBrush="Black" BorderThickness="1">
             <Grid>
                 <StackPanel HorizontalAlignment="Right"
-                            Margin="930,0,0,0"
+                            Margin="0,0,10,0"
                             VerticalAlignment="Center">
                     <Button Content="Выйти"
                             Width="100"
+                            FontSize="15"
+                            Height="30"
                             Click="btnSignOut_Click"
                             Name="btnSignOut">
                         <Button.Resources>
                             <Style TargetType="Border">
-                                <Setter Value="10" Property="CornerRadius"/>
+                                <Setter Value="15" Property="CornerRadius"/>
                             </Style>
                         </Button.Resources>
                     </Button>
                 </StackPanel>
             </Grid>
         </Border>
+        <StackPanel HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Margin="10"
+                    Orientation="Horizontal">
+            <ToggleButton x:Name="ThemeToggleButton" Width="40" Height="40" Checked="ThemeToggleButton_Checked" Unchecked="ThemeToggleButton_Unchecked">
+                <ToggleButton.Template>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <Image x:Name="image"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="image" Property="Source" Value="/Resources/sun_dark.png"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="image" Property="Source" Value="/Resources/moon_light.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+        </StackPanel>
 
         <Grid Grid.Row="1">
             <Frame Name="mainFrame" NavigationUIVisibility="Hidden" ContentRendered="mainFrame_ContentRendered"/>

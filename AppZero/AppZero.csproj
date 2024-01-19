@@ -75,6 +75,14 @@
     <Compile Include="Views\Windows\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Themes\DarkTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Themes\LightTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
     <Page Include="Views\Pages\AdminPages\ViewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -230,6 +238,11 @@
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\moon_dark.png" />
+    <Resource Include="Resources\moon_light.png" />
+    <Resource Include="Resources\sun_dark.png" />
+    <Resource Include="Resources\sun_light.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

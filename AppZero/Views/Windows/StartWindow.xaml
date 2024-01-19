@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AppZero.Views.Windows"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow"
-        Title="Запуск приложения" Height="350" Width="400">
+        Title="Запуск приложения" Height="250" Width="400">
     <!-- XAML -->
     <Grid>
         <TextBlock x:Name="LoadingLabel" FontFamily="Consolas" Text="Loading..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" />

@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:AppZero"
              StartupUri="Views/Windows/StartWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Подключение темы по умолчанию, например, светлой. -->
+                <ResourceDictionary Source="Themes/LightTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
