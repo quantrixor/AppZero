@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b1fd7397d7164617b4740c853e34cbe7" Name="Diagram1">
+        <EntityTypeShape EntityType="dbLocalModel.Peripherals" Width="1.5" PointX="3" PointY="5.375" />
+        <EntityTypeShape EntityType="dbLocalModel.PeripheralShelf" Width="1.5" PointX="5.25" PointY="4.25" />
+        <EntityTypeShape EntityType="dbLocalModel.Position" Width="1.5" PointX="10" PointY="5.375" />
+        <EntityTypeShape EntityType="dbLocalModel.Rack" Width="1.5" PointX="0.75" PointY="4.125" />
+        <EntityTypeShape EntityType="dbLocalModel.Rule" Width="1.5" PointX="7.75" PointY="1.375" />
+        <EntityTypeShape EntityType="dbLocalModel.Shelves" Width="1.5" PointX="3" PointY="2.625" />
+        <EntityTypeShape EntityType="dbLocalModel.SignIn" Width="1.5" PointX="10" PointY="1.125" />
+        <EntityTypeShape EntityType="dbLocalModel.SpareParts" Width="1.5" PointX="5.25" PointY="7.75" />
+        <EntityTypeShape EntityType="dbLocalModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="dbLocalModel.User" Width="1.5" PointX="12.25" PointY="1" />
+        <AssociationConnector Association="dbLocalModel.FK_Peripherals_Rack" />
+        <AssociationConnector Association="dbLocalModel.FK_PeripheralShelf_Peripherals" />
+        <AssociationConnector Association="dbLocalModel.FK_SpareParts_Peripherals" />
+        <AssociationConnector Association="dbLocalModel.FK_PeripheralShelf_Shelves" />
+        <AssociationConnector Association="dbLocalModel.FK_User_Position" />
+        <AssociationConnector Association="dbLocalModel.FK_Shelves_Rack" />
+        <AssociationConnector Association="dbLocalModel.FK_SpareParts_Rack" />
+        <AssociationConnector Association="dbLocalModel.FK_SignIn_Rule" />
+        <AssociationConnector Association="dbLocalModel.FK_User_SignIn" />
+        <EntityTypeShape EntityType="dbLocalModel.SparePartsShelves" Width="1.5" PointX="7.5" PointY="5.625" />
+        <AssociationConnector Association="dbLocalModel.FK_SparePartsShelves_Shelves" />
+        <AssociationConnector Association="dbLocalModel.FK_SparePartsShelves_SpareParts" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
