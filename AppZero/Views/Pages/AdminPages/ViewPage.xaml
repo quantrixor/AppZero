@@ -1,16 +1,16 @@
 ﻿<Page x:Class="AppZero.Views.Pages.AdminPages.ViewPage"
+      xmlns:local="clr-namespace:AppZero"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:AppZero.Views.Pages.AdminPages"
       mc:Ignorable="d" FontSize="14"
       Loaded="Page_Loaded"
       d:DesignHeight="500" d:DesignWidth="1015"
       Title="Форма администратора">
 
     <Grid>
-        <TabControl>
+        <TabControl x:Name="mainTabControl">
             <!--Регистрация сотрудников-->
             <TabItem>
                 <TabItem.Header>
@@ -46,7 +46,8 @@
                         <Button Content="Сохранить данные"
                                 Margin="0,10,0,0"
                                 Click="btnSave_Click"
-                                Name="btnSave"/>
+                                Name="btnSave"
+                                />
                     </StackPanel>
                 </TabItem.Content>
             </TabItem>
@@ -82,6 +83,20 @@
 
                         <Grid Grid.Row="1">
                             <DataGrid Name="ListDataEmp" IsReadOnly="True" MouseDoubleClick="ListDataEmp_MouseDoubleClick" AutoGenerateColumns="False" ColumnWidth="*">
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <!-- По умолчанию цвет фона будет обычным -->
+                                        <Setter Property="Background" Value="White" />
+                                        <!-- Изменить цвет фона, если роль пользователя - Admin -->
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RoleTitle}" Value="Admin">
+                                                <Setter Property="Background" Value="LightBlue" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        
+                                        
+                                    </Style>
+                                </DataGrid.RowStyle>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
                                     <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}"/>
@@ -101,6 +116,11 @@
                                         Width="200"
                                         x:Name="btnDeleteEmp"
                                         Click="btnDeleteEmp_Click"/>
+                                <Button Content="Редактировать"
+                                        Width="200"
+                                        x:Name="btnEditEmp"
+                                        Click="btnEditEmp_Click"
+                                        Margin="10,0,0,0"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
@@ -191,13 +211,11 @@
                                         Margin="10,0,0,0">
                                 <Label Content="Выберите период: "/>
                                 <DatePicker Name="dtpStartDate"
-                                            Width="200"
-                                            SelectedDateChanged="dtpStartDate_SelectedDateChanged"/>
+                                            Width="200"/>
                                 
                                 <DatePicker Name="dtpEndDate"
                                             Margin="10,0,0,0"
-                                            Width="200"
-                                            SelectedDateChanged="dtpEndDate_SelectedDateChanged"/>
+                                            Width="200"/>
                                 <Button Content="Вывести"
                                         Margin="10,0,0,0"
                                         Width="250"
@@ -324,9 +342,9 @@
                                         VerticalAlignment="Center"
                                         >
                                 <TextBlock Text="Номер стеллажа:"/>
-                                <TextBox x:Name="txbNumSt" Width="250"/>
+                                <TextBox x:Name="txbNumSt" Margin="0,5" Width="250"/>
                                 <TextBlock Text="Количество полок (мин. 3 - макс. 5):"/>
-                                <TextBox x:Name="txbCountSt" Width="250" TextChanged="txbCountSt_TextChanged" />
+                                <TextBox x:Name="txbCountSt" Margin="0,5" Width="250" TextChanged="txbCountSt_TextChanged" />
 
                                 <Button Name="btnSaveRack"
                                         Content="Сохранить"

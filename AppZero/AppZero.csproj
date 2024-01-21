@@ -71,6 +71,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\PartialUser.cs" />
+    <Compile Include="Settings\CatchException.cs" />
     <Compile Include="Settings\Logger.cs" />
     <Compile Include="Views\Windows\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>

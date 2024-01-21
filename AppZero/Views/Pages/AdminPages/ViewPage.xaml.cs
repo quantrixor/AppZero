@@ -1,8 +1,10 @@
 ﻿using AppZero.Context;
 using AppZero.Model;
+using AppZero.Settings;
 using AppZero.Views.Windows.AdminWindows;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +24,7 @@ namespace AppZero.Views.Pages.AdminPages
         public List<Position> Positions { get; set; }
         public List<Rule> Rules { get; set; }
         public User CurrentUser { get; set; }
+        private User _selectedItem { get; set; }
 
         public ViewPage(User currentUser)
         {
@@ -29,7 +32,7 @@ namespace AppZero.Views.Pages.AdminPages
             User = new User();
             SignIn = new SignIn();
             Positions = AppData.db.Position.ToList();
-            Rules = AppData.db.Rule.ToList(); 
+            Rules = AppData.db.Rule.ToList();
             CurrentUser = currentUser;
 
 
@@ -52,26 +55,36 @@ namespace AppZero.Views.Pages.AdminPages
                      cmbRule.Text == "")
                     throw new Exception("Заполните поля!");
 
-                if (User.ID == 0 && SignIn.ID == 0)
+                if (User.ID == 0 && SignIn.ID == 0 && _selectedItem == null)
                 {
                     if (AppData.db.SignIn.Count(item => item.Username == SignIn.Username) > 0)
                         throw new Exception("Пользователь: " + SignIn.Username + " уже существует!");
+
                     SignIn.IDRole = AppData.db.Rule.FirstOrDefault(item => item.Title == cmbRule.Text).ID;
                     AppData.db.SignIn.Add(SignIn);
+
                     AppData.db.User.Add(User);
                 }
+                if(_selectedItem != null)
+                {
+                    User.Position = cmbPosition.SelectedItem as Position;
+                    User.SignIn.Rule = cmbRule.SelectedItem as Rule;
+                }
+
                 AppData.db.SaveChanges();
+                
                 MessageBox.Show("Данные успешно сохранены в базу данных!", "Данные сохранены.", MessageBoxButton.OK, MessageBoxImage.Information);
                 GC.Collect();
                 ClearUserData();
                 Page_Loaded(null, null);
+                mainTabControl.SelectedIndex = 1;
             }
-            catch (Exception ex)
+            catch (DbEntityValidationException ex)
             {
-                MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                CatchException.DisplayValidationErrors(ex);
             }
         }
-
+        // Очистка всех значений из полей
         private void ClearUserData()
         {
             txbFirstName.Text = "";
@@ -81,6 +94,8 @@ namespace AppZero.Views.Pages.AdminPages
             txbUsername.Text = "";
             cmbPosition.Text = "";
             cmbRule.Text = "";
+            _selectedItem = null;
+            User = null;
         }
         // Выгружаем данные из БД
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -123,12 +138,12 @@ namespace AppZero.Views.Pages.AdminPages
             item.Rack.Number.Contains(txbSearchPeripher.Text) || item.ShellRackNumber.Contains(txbSearchPeripher.Text) ||
             item.Count.ToString().Contains(txbSearchPeripher.Text)).ToList();
         }
-
+        // Сортировка данных зала по дате
         private void sortDatePeripher_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             listDataPeripher.ItemsSource = AppData.db.Peripherals.Where(item => item.DateAdded == sortDatePeripher.SelectedDate).ToList();
         }
-
+        // Обновить данные из базы данных
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             sortDate.SelectedDate = null;
@@ -143,6 +158,7 @@ namespace AppZero.Views.Pages.AdminPages
             {
                 if (dtpStartDate.SelectedDate != null && dtpEndDate.SelectedDate != null)
                 {
+                    // Запрос на вывод данных запчастей по указанным параметрам
                     SparePartsDestination = AppData.db.SpareParts.Where(item => item.DateAdded >= dtpStartDate.SelectedDate && item.DateAdded <= dtpEndDate.SelectedDate).ToList();
                     ExportSparePartsDataPDF();
                 }
@@ -155,16 +171,6 @@ namespace AppZero.Views.Pages.AdminPages
             {
                 MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-
-        }
-
-        private void dtpStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void dtpEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
 
         }
 
@@ -490,6 +496,30 @@ namespace AppZero.Views.Pages.AdminPages
                 if (userData != null)
                 {
                     MessageBox.Show($"Имя пользователя: {userData.SignIn.Username} Пароль: {userData.SignIn.Username} Роль: {userData.SignIn.Rule.Title}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnEditEmp_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _selectedItem = ListDataEmp.SelectedItem as User;
+                if (_selectedItem != null)
+                {
+                    txbFirstName.Text = _selectedItem.FirstName;
+                    txbLastName.Text = _selectedItem.LastName;
+                    txbMiddleName.Text = _selectedItem.MiddleName;
+                    txbUsername.Text = _selectedItem.SignIn.Username;
+                    txbPassword.Text = _selectedItem.SignIn.Password;
+                    User = _selectedItem;
+                    cmbPosition.SelectedItem = Positions.FirstOrDefault(p => p.ID == _selectedItem.IDPosition);
+                    cmbRule.SelectedItem = Rules.FirstOrDefault(r => r.ID == _selectedItem.SignIn.IDRole);
+                    mainTabControl.SelectedIndex = 0;
                 }
             }
             catch (Exception ex)
