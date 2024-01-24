@@ -35,8 +35,6 @@ namespace AppZero.Views.Pages.AdminPages
             Rules = AppData.db.Rule.ToList();
             CurrentUser = currentUser;
 
-
-
             this.DataContext = this;
             MessageBox.Show($"Добро пожаловать {currentUser.FirstName} {CurrentUser.LastName}! Вы авторизовались правами Администратора.",
                "Систеиное уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -65,14 +63,14 @@ namespace AppZero.Views.Pages.AdminPages
 
                     AppData.db.User.Add(User);
                 }
-                if(_selectedItem != null)
+                if (_selectedItem != null)
                 {
                     User.Position = cmbPosition.SelectedItem as Position;
                     User.SignIn.Rule = cmbRule.SelectedItem as Rule;
                 }
 
                 AppData.db.SaveChanges();
-                
+
                 MessageBox.Show("Данные успешно сохранены в базу данных!", "Данные сохранены.", MessageBoxButton.OK, MessageBoxImage.Information);
                 GC.Collect();
                 ClearUserData();
@@ -97,6 +95,7 @@ namespace AppZero.Views.Pages.AdminPages
             _selectedItem = null;
             User = null;
         }
+
         // Выгружаем данные из БД
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {

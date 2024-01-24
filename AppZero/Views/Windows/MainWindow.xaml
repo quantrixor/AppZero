@@ -25,6 +25,8 @@
                     <Button Content="Выйти"
                             Width="100"
                             FontSize="15"
+                            Background="{DynamicResource ButtonDefaultBackground}"
+                            Foreground="{DynamicResource ButtonDefaulForeground}"
                             Height="30"
                             Click="btnSignOut_Click"
                             Name="btnSignOut">
@@ -61,7 +63,7 @@
         </StackPanel>
 
         <Grid Grid.Row="1">
-            <Frame Name="mainFrame" NavigationUIVisibility="Hidden" ContentRendered="mainFrame_ContentRendered"/>
+            <Frame Name="mainFrame" Navigated="mainFrame_Navigated" NavigationUIVisibility="Hidden" ContentRendered="mainFrame_ContentRendered"/>
         </Grid>
 
     </Grid>

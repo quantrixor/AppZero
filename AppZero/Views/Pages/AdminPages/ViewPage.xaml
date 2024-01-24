@@ -6,61 +6,217 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" FontSize="14"
       Loaded="Page_Loaded"
-      d:DesignHeight="500" d:DesignWidth="1015"
+      d:DesignHeight="500" d:DesignWidth="1005"
       Title="Форма администратора">
+
+    <Page.Resources>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ButtonDefaultBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ButtonDefaulForeground}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource PrimaryDefaultBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryDefaultForeground}"/>
+        </Style>
+
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource DefaultDataGridBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource DefaultDataGridForeground}"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+                    <Setter Property="Background" Value="{DynamicResource BorderBackgroud}"/>
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBackground}" />
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="2"
+                          Background="{DynamicResource BorderBackgroud}"
+                          BorderThickness="2" />
+                <Border 
+                          Grid.Column="0"
+                          CornerRadius="2,0,0,2" 
+                          Margin="1" 
+                          Background="{DynamicResource BackgroundComboBox}" 
+                          BorderThickness="2" />
+                <Path 
+                      x:Name="Arrow"
+                      Grid.Column="1"     
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M 0 0 L 4 4 L 8 0 Z"/>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <Border x:Name="PART_ContentHost" 
+                    Focusable="False" Background="{TemplateBinding Background}" />
+        </ControlTemplate>
+        <Style x:Key="{x:Type ComboBox}" TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton 
+                                Name="ToggleButton" 
+                                Template="{StaticResource ComboBoxToggleButton}" 
+                                Grid.Column="2" 
+                                Focusable="false"
+                                IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                ClickMode="Press"
+                                Foreground="{DynamicResource PrimaryBackground}">
+                            </ToggleButton>
+                            <ContentPresenter
+                                Name="ContentSite"
+                                Content="{TemplateBinding SelectedItem}"
+                                ContentTemplate="{TemplateBinding ItemTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                Margin="3,3,23,3"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     Style="{x:Null}" 
+                                     Template="{StaticResource ComboBoxTextBox}" 
+                                     HorizontalAlignment="Left" 
+                                     VerticalAlignment="Center" 
+                                     Margin="3,3,23,3"
+                                     Focusable="True" 
+                                     Background="{DynamicResource BackgroundComboBox}"
+                                     Foreground="{DynamicResource ForegroundComboBox}"
+                                     Visibility="Hidden"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup 
+                                Name="Popup"
+                                Placement="Bottom"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                AllowsTransparency="True" 
+                                Focusable="False"
+                                PopupAnimation="Slide">
+                                <Grid 
+                                    Name="DropDown"
+                                    SnapsToDevicePixels="True"                
+                                    MinWidth="{TemplateBinding ActualWidth}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border 
+                                        x:Name="DropDownBorder"
+                                        BorderBrush="{DynamicResource BorderbrushComboBox}"
+                                        Background="{DynamicResource BackgroundComboBox}"
+                                        BorderThickness="1"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+            </Style.Triggers>
+        </Style>
+
+    </Page.Resources>
 
     <Grid>
         <TabControl x:Name="mainTabControl">
-            <!--Регистрация сотрудников-->
-            <TabItem>
-                <TabItem.Header>
-                    <Label Height="40"
-                           Width="190"
-                           FontSize="15"
-                           Content="Регистрация сотрудника"
-                           VerticalContentAlignment="Center"/>
+            <TabControl.Resources>
 
-                </TabItem.Header>
+                <!-- Стиль для всех вкладок -->
+                <Style TargetType="TabItem">
+                    <Setter Property="Foreground" Value="{DynamicResource TabItemForeground}"/>
+                    <Setter Property="Padding" Value="10"/>
+                    <Style.Triggers>
+                        <!-- Стиль для выбранной вкладки -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource TabItemSelectedBackground}"/>
+                        </Trigger>
+                        <!-- Стиль для невыбранной вкладки -->
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter Property="Background" Value="{DynamicResource TabControlBackground}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TabControl.Resources>
+            <!--Регистрация сотрудников-->
+            <TabItem Width="200" Header="Регистрация сотрудника">
                 <TabItem.Content>
-                    <StackPanel Width="200"
+                    <Grid>
+
+                        <StackPanel Width="200"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
-                        <TextBlock Text="Имя:"/>
-                        <TextBox x:Name="txbFirstName" Text="{Binding User.FirstName}"/>
-                        <TextBlock Text="Фамилия:"/>
-                        <TextBox x:Name="txbLastName" Text="{Binding User.LastName}"/>
-                        <TextBlock Text="Отчество:"/>
-                        <TextBox x:Name="txbMiddleName" Text="{Binding User.MiddleName}"/>
-                        <TextBlock Text="Должность:"/>
-                        <ComboBox x:Name="cmbPosition" ItemsSource="{Binding Positions}" 
-                                  DisplayMemberPath="Title"
-                                  SelectedItem="{Binding User.Position}"></ComboBox>
-                        <TextBlock Text="Имя пользователя:"/>
-                        <TextBox x:Name="txbPassword" Text="{Binding SignIn.Username}"/>
-                        <TextBlock Text="Пароль:"/>
-                        <TextBox x:Name="txbUsername" Text="{Binding SignIn.Password}"/>
-                        <TextBlock Text="Роль:"/>
-                        <ComboBox Name="cmbRule" ItemsSource="{Binding Rules}"
+                            <TextBlock Text="Имя:"/>
+                            <TextBox x:Name="txbFirstName" Text="{Binding User.FirstName}"/>
+                            <TextBlock Text="Фамилия:"/>
+                            <TextBox x:Name="txbLastName" Text="{Binding User.LastName}"/>
+                            <TextBlock Text="Отчество:"/>
+                            <TextBox x:Name="txbMiddleName" Text="{Binding User.MiddleName}"/>
+                            <TextBlock Text="Должность:"/>
+                            <ComboBox x:Name="cmbPosition" 
+                                      ItemsSource="{Binding Positions}" 
+                                      DisplayMemberPath="Title"
+                                      SelectedItem="{Binding User.Position}"
+                                      Text="Hello">
+                            </ComboBox>
+                            <TextBlock Text="Имя пользователя:"/>
+                            <TextBox x:Name="txbPassword" Text="{Binding SignIn.Username}"/>
+                            <TextBlock Text="Пароль:"/>
+                            <TextBox x:Name="txbUsername" Text="{Binding SignIn.Password}"/>
+                            <TextBlock Text="Роль:"/>
+                            <ComboBox Name="cmbRule"
+                                      ItemsSource="{Binding Rules}"
                                   DisplayMemberPath="Title"
                                   SelectedItem="{Binding User.Rule}"></ComboBox>
-                        <Button Content="Сохранить данные"
+                            <Button Content="Сохранить данные"
                                 Margin="0,10,0,0"
                                 Click="btnSave_Click"
                                 Name="btnSave"
                                 />
-                    </StackPanel>
+                        </StackPanel>
+                    </Grid>
                 </TabItem.Content>
             </TabItem>
             <!--База сотрудников-->
-            <TabItem>
-                <TabItem.Header>
-                    <Label Height="40"
-                           Width="190"
-                           FontSize="15"
-                           Content="База сотрудников"
-                           VerticalContentAlignment="Center"/>
 
-                </TabItem.Header>
+            <TabItem Width="200" Header="База сотрудников">
                 <TabItem.Content>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -73,16 +229,18 @@
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
-                            
+
                             <TextBlock Text="Поиск: "/>
                             <TextBox Name="txbSearchEmp"
                                      TextChanged="txbSearchEmp_TextChanged"
                                      Width="250"/>
-                            
+
                         </StackPanel>
 
                         <Grid Grid.Row="1">
-                            <DataGrid Name="ListDataEmp" IsReadOnly="True" MouseDoubleClick="ListDataEmp_MouseDoubleClick" AutoGenerateColumns="False" ColumnWidth="*">
+                            <DataGrid Name="ListDataEmp" 
+                                      
+                                      IsReadOnly="True" MouseDoubleClick="ListDataEmp_MouseDoubleClick" AutoGenerateColumns="False" ColumnWidth="*">
                                 <DataGrid.RowStyle>
                                     <Style TargetType="DataGridRow">
                                         <!-- По умолчанию цвет фона будет обычным -->
@@ -93,8 +251,6 @@
                                                 <Setter Property="Background" Value="LightBlue" />
                                             </DataTrigger>
                                         </Style.Triggers>
-                                        
-                                        
                                     </Style>
                                 </DataGrid.RowStyle>
                                 <DataGrid.Columns>
@@ -111,7 +267,7 @@
                             <StackPanel HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Orientation="Horizontal">
-                                
+
                                 <Button Content="Удалить"
                                         Width="200"
                                         x:Name="btnDeleteEmp"
@@ -126,16 +282,9 @@
                     </Grid>
                 </TabItem.Content>
             </TabItem>
-            <!--База запчастей и устройств-->
-            <TabItem>
-                <TabItem.Header>
-                    <Label Height="40"
-                           Width="190"
-                           FontSize="15"
-                           Content="Склад"
-                           VerticalContentAlignment="Center"/>
 
-                </TabItem.Header>
+
+            <TabItem Width="200" Header="Склад">
                 <TabItem.Content>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -147,7 +296,7 @@
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
-                            
+
                             <Label Content="Поиск: "/>
                             <TextBox Name="txbSearchDevice"
                                     TextChanged="txbSearchDevice_TextChanged"
@@ -212,7 +361,7 @@
                                 <Label Content="Выберите период: "/>
                                 <DatePicker Name="dtpStartDate"
                                             Width="200"/>
-                                
+
                                 <DatePicker Name="dtpEndDate"
                                             Margin="10,0,0,0"
                                             Width="200"/>
@@ -226,16 +375,9 @@
                     </Grid>
                 </TabItem.Content>
             </TabItem>
-            <!--База учёта периферии-->
-            <TabItem>
-                <TabItem.Header>
-                    <Label Height="40"
-                           Width="190"
-                           FontSize="15"
-                           Content="Зал"
-                           VerticalContentAlignment="Center"/>
 
-                </TabItem.Header>
+
+            <TabItem Header="Зал" Width="200">
                 <TabItem.Content>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -260,7 +402,7 @@
                                        Content="Выберите дату: "/>
                                 <DatePicker Name="sortDatePeripher"
                                             SelectedDateChanged="sortDatePeripher_SelectedDateChanged"
-                                            Width="200"/>
+                                            Width="200" SelectedDateFormat="Short"/>
 
                                 <Button Content="Обновить"
                                         Width="100"
@@ -326,15 +468,8 @@
                     </Grid>
                 </TabItem.Content>
             </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Label Height="40"
-                           Width="190"
-                           FontSize="15"
-                           Content="Стеллажи и полки"
-                           VerticalContentAlignment="Center"/>
 
-                </TabItem.Header>
+            <TabItem Width="200" Header="Стеллажи и полки">
                 <TabItem.Content>
                     <Grid>
                         <Grid Grid.Row="1">

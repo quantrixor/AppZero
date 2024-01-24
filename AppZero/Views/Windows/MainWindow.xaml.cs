@@ -1,5 +1,6 @@
 ﻿using AppZero.Model;
 using AppZero.Views.Pages;
+using AppZero.Views.Pages.AdminPages;
 using System;
 using System.Linq;
 using System.Windows;
@@ -54,6 +55,7 @@ namespace AppZero
             // Добавляем новый словарь ресурсов.
             Application.Current.Resources.MergedDictionaries.Add(dict);
         }
+       
 
         private void ThemeToggleButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -65,6 +67,14 @@ namespace AppZero
         {
             // Переключение на светлую тему.
             ChangeTheme(new Uri("pack://application:,,,/Themes/LightTheme.xaml"));
+        }
+
+        private void mainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            if (e.Content is Page)
+            {
+                ((Page)e.Content).KeepAlive = false;
+            }
         }
     }
 }

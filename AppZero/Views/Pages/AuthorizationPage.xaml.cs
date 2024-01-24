@@ -33,9 +33,11 @@ namespace AppZero.Views.Pages
                     {
                         case "A":
                             NavigationService.Navigate(new ViewPage(currentUser.User.FirstOrDefault(item => item.IDSignIn == currentUser.ID)));
+                            
                             break;
                         case "U":
                             NavigationService.Navigate(new ViewPageEmp());
+                            
                             break;
                         default:
                             throw new Exception("Неверный логин или пароль!");
@@ -51,5 +53,7 @@ namespace AppZero.Views.Pages
                 MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+       
     }
 }

@@ -2,9 +2,59 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="PrimaryBackground" Color="#000000"/>
     <SolidColorBrush x:Key="PrimaryForeground" Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="ButtonBackground" Color="#E5AE6F"/>
+    
     <SolidColorBrush x:Key="TextBoxBackground" Color="#E5AE6F"/>
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="BorderBackgroud" Color="#373737"/>
-    <SolidColorBrush x:Key="GridBackgroud" Color="#000000"/>
+
+    <!--New style-->
+    <SolidColorBrush x:Key="ButtonDefaultBackground" Color="#E5AE6F"/>
+    <SolidColorBrush x:Key="ButtonDefaulForeground" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="DefaultEnterBackground" Color="#E5AE6F"/>
+    <SolidColorBrush x:Key="DefaultEnterForeground" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="PrimaryDefaultBackground" Color="#E5AE6F"/>
+    <SolidColorBrush x:Key="PrimaryDefaultForeground" Color="#FFFFFF"/>
+
+    <!--Datagrid-->
+    <SolidColorBrush x:Key="DefaultDataGridForeground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="DefaultDataGridBackground" Color="#373737"/>
+    <!--dark tabControl-->
+    <SolidColorBrush x:Key="TabControlBackground" Color="#E5AE6F"/>
+    <SolidColorBrush x:Key="TabItemSelectedBackground" Color="#B78142"/>
+    <SolidColorBrush x:Key="TabItemForeground" Color="#000000"/>
+    
+    <SolidColorBrush x:Key="ForegroundComboBox" Color="#000000"/>
+    <SolidColorBrush x:Key="BackgroundComboBox" Color="#B78142"/>
+    <SolidColorBrush x:Key="BorderbrushComboBox" Color="#000000"/>
+
+
+    <Style TargetType="DatePicker">
+        <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
+        <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>
+        <Style.Resources>
+            <!-- Стиль для календаря, который отображается при открытии -->
+            <Style TargetType="{x:Type CalendarDayButton}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=Grid.Row, RelativeSource={RelativeSource Self}}" Value="0">
+                        <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
+                        <!-- Другие свойства, которые вы хотите изменить для заголовков дней недели -->
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type Calendar}">
+                <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>
+                <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
+            </Style>
+            <Style TargetType="{x:Type DatePickerTextBox}">
+                <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>
+                <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
+            </Style>
+
+        </Style.Resources>
+    </Style>
+
 </ResourceDictionary>
