@@ -7,7 +7,7 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         MinHeight="500"
-        MinWidth="830"
+        MinWidth="1050"
         Title="{Binding ElementName=mainFrame, Path=Content.Title}"
         Height="450" Width="1055">
 

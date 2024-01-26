@@ -12,13 +12,12 @@ namespace AppZero.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class PeripheralShelf
+    public partial class SubtypeWarehouseType
     {
         public int ID { get; set; }
-        public int PeripheralID { get; set; }
-        public int ShelfID { get; set; }
+        public string Title { get; set; }
+        public Nullable<int> WarehouseTypeId { get; set; }
     
-        public virtual Peripherals Peripherals { get; set; }
-        public virtual Shelves Shelves { get; set; }
+        public virtual WarehouseType WarehouseType { get; set; }
     }
 }

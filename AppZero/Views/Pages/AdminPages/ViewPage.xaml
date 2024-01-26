@@ -352,6 +352,12 @@
                                         Width="200"
                                         Name="btnRemove"
                                         Click="btnRemove_Click"/>
+
+                                <Button Content="Управление типами"
+                                        Width="200"
+                                        Margin="5,0,0,0"
+                                        x:Name="btnManageTypeWarehouse"
+                                        Click="btnManageTypeWarehouse_Click"/>
                             </StackPanel>
                             <StackPanel Grid.Row="2"
                                         Orientation="Horizontal"

@@ -31,7 +31,6 @@
     <SolidColorBrush x:Key="BackgroundComboBox" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="BorderbrushComboBox" Color="#000000"/>
 
-    
     <Style TargetType="DatePicker">
         <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
         <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>

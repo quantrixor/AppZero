@@ -526,5 +526,11 @@ namespace AppZero.Views.Pages.AdminPages
                 MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void btnManageTypeWarehouse_Click(object sender, RoutedEventArgs e)
+        {
+            ActionTypeWarehouse window = new ActionTypeWarehouse();
+            window.ShowDialog();
+        }
     }
 }

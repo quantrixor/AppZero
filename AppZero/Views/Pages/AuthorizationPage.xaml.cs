@@ -53,7 +53,5 @@ namespace AppZero.Views.Pages
                 MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-       
     }
 }

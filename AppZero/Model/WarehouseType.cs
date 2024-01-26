@@ -12,25 +12,21 @@ namespace AppZero.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Rack
+    public partial class WarehouseType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Rack()
+        public WarehouseType()
         {
-            this.Peripherals = new HashSet<Peripherals>();
-            this.Shelves = new HashSet<Shelves>();
             this.SpareParts = new HashSet<SpareParts>();
+            this.SubtypeWarehouseType = new HashSet<SubtypeWarehouseType>();
         }
     
         public int ID { get; set; }
-        public string Number { get; set; }
-        public int CountShelves { get; set; }
+        public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Peripherals> Peripherals { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Shelves> Shelves { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SpareParts> SpareParts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SubtypeWarehouseType> SubtypeWarehouseType { get; set; }
     }
 }
