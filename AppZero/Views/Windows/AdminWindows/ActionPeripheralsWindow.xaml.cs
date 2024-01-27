@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace AppZero.Views.Windows.AdminWindows
@@ -25,51 +26,53 @@ namespace AppZero.Views.Windows.AdminWindows
             typeHalls = AppData.db.TypeHall.ToList();
             this.DataContext = this;
         }
-
+        // Управление данными ЗАЛОВ
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (txbCount.Text == "0" || txbDescription.Text == "" || cmbRackNumber.SelectedValue == null || cmbShelfNumber.SelectedValue == null || cmbHallType.SelectedValue == null)
+                // Проверка на пустые значения
+                if (string.IsNullOrWhiteSpace(txbCount.Text) ||
+                    string.IsNullOrWhiteSpace(txbDescription.Text) ||
+                    cmbRackNumber.SelectedItem == null ||
+                    cmbShelfNumber.SelectedItem == null ||
+                    cmbHallType.SelectedItem == null)
+                {
                     throw new Exception("ВНИМАНИЕ! Пустые значения не допустимы.");
+                }
 
                 int numberOfShelves = int.Parse(txbCount.Text);
+                bool isNewPeripherals = Peripherals.ID == 0;
+
+                // Обновляем данные Peripherals
                 Peripherals.DateAdded = DateTime.Now;
                 Peripherals.IDRack = (int)cmbRackNumber.SelectedValue;
+                Peripherals.Description = txbDescription.Text;
+                // Обновление других свойств Peripherals...
 
-                // Если это редактирование, необходимо удалить старые записи с полок
-                if (Peripherals.ID != 0)
+                if (isNewPeripherals)
                 {
-                    var oldShelves = AppData.db.PeripheralShelf.Where(ps => ps.PeripheralID == Peripherals.ID).ToList();
-                    foreach (var oldShelf in oldShelves)
-                    {
-                        AppData.db.PeripheralShelf.Remove(oldShelf);
-                    }
-                    AppData.db.SaveChanges(); // Сохраняем изменения сразу после удаления
-                }
-
-                // Создание новых записей для PeripheralShelf
-                int firstShelfIndex = cmbShelfNumber.SelectedIndex;
-                var availableShelves = AppData.db.Shelves.Where(s => s.IDRack == Peripherals.IDRack).OrderBy(s => s.ID).ToList();
-
-                if (firstShelfIndex + numberOfShelves > availableShelves.Count)
-                {
-                    throw new Exception("Недостаточно свободных полок для размещения периферии");
-                }
-
-                for (int i = 0; i < numberOfShelves; i++)
-                {
-                    int currentShelfId = availableShelves[firstShelfIndex + i].ID;
-                    PeripheralShelf peripheralShelf = new PeripheralShelf { PeripheralID = Peripherals.ID, ShelfID = currentShelfId };
-                    AppData.db.PeripheralShelf.Add(peripheralShelf);
-                }
-
-                // Если это создание новой периферии, добавить ее в базу данных
-                if (Peripherals.ID == 0)
-                {
+                    // Добавляем новую периферию, если это создание
                     AppData.db.Peripherals.Add(Peripherals);
                 }
+                else
+                {
+                    // Обновляем существующую периферию, если это редактирование
+                    var oldShelves = AppData.db.PeripheralShelf.Where(ps => ps.PeripheralID == Peripherals.ID).ToList();
+                    AppData.db.PeripheralShelf.RemoveRange(oldShelves);
+                }
 
+                // Сохраняем изменения для получения ID новой периферии или обновления существующей
+                AppData.db.SaveChanges();
+
+                // Создание новых записей для PeripheralShelf
+                var selectedShelves = GetSelectedShelves(cmbShelfNumber, numberOfShelves, Peripherals.IDRack);
+                foreach (var shelfId in selectedShelves)
+                {
+                    AppData.db.PeripheralShelf.Add(new PeripheralShelf { PeripheralID = Peripherals.ID, ShelfID = shelfId });
+                }
+
+                // Сохраняем все изменения в базе данных
                 AppData.db.SaveChanges();
                 MessageBox.Show("Данные сохранены в базе данных!", "Операция прошла успешно", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
@@ -78,6 +81,19 @@ namespace AppZero.Views.Windows.AdminWindows
             {
                 MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        // Вспомогательный метод для получения ID выбранных полок
+        private List<int> GetSelectedShelves(ComboBox cmbShelfNumber, int numberOfShelves, int rackId)
+        {
+            int firstShelfIndex = cmbShelfNumber.SelectedIndex;
+            return AppData.db.Shelves
+                .Where(s => s.IDRack == rackId)
+                .OrderBy(s => s.ID)
+                .Skip(firstShelfIndex)
+                .Take(numberOfShelves)
+                .Select(s => s.ID)
+                .ToList();
         }
 
 
