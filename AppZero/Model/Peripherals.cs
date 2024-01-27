@@ -18,7 +18,6 @@ namespace AppZero.Model
         public Peripherals()
         {
             this.PeripheralShelf = new HashSet<PeripheralShelf>();
-            this.SpareParts = new HashSet<SpareParts>();
         }
     
         public int ID { get; set; }
@@ -32,7 +31,5 @@ namespace AppZero.Model
         public virtual TypeHall TypeHall { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PeripheralShelf> PeripheralShelf { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SpareParts> SpareParts { get; set; }
     }
 }

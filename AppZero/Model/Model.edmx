@@ -74,6 +74,7 @@
           <Property Name="Count" Type="int" Nullable="false" />
           <Property Name="DateAdded" Type="datetime" Nullable="false" />
           <Property Name="IDTypeWarehouse" Type="int" Nullable="false" />
+          <Property Name="IDSubtypeWarehouse" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SparePartsShelves">
           <Key>
@@ -204,18 +205,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SpareParts_Peripherals">
-          <End Role="Peripherals" Type="Self.Peripherals" Multiplicity="1" />
-          <End Role="SpareParts" Type="Self.SpareParts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Peripherals">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="SpareParts">
-              <PropertyRef Name="IDPeripherals" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SpareParts_Rack">
           <End Role="Rack" Type="Self.Rack" Multiplicity="1" />
           <End Role="SpareParts" Type="Self.SpareParts" Multiplicity="*" />
@@ -225,6 +214,18 @@
             </Principal>
             <Dependent Role="SpareParts">
               <PropertyRef Name="IDRack" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpareParts_SubtypeWarehouseType">
+          <End Role="SubtypeWarehouseType" Type="Self.SubtypeWarehouseType" Multiplicity="1" />
+          <End Role="SpareParts" Type="Self.SpareParts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubtypeWarehouseType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SpareParts">
+              <PropertyRef Name="IDSubtypeWarehouse" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -345,12 +346,12 @@
             <End Role="Rule" EntitySet="Rule" />
             <End Role="SignIn" EntitySet="SignIn" />
           </AssociationSet>
-          <AssociationSet Name="FK_SpareParts_Peripherals" Association="Self.FK_SpareParts_Peripherals">
-            <End Role="Peripherals" EntitySet="Peripherals" />
-            <End Role="SpareParts" EntitySet="SpareParts" />
-          </AssociationSet>
           <AssociationSet Name="FK_SpareParts_Rack" Association="Self.FK_SpareParts_Rack">
             <End Role="Rack" EntitySet="Rack" />
+            <End Role="SpareParts" EntitySet="SpareParts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpareParts_SubtypeWarehouseType" Association="Self.FK_SpareParts_SubtypeWarehouseType">
+            <End Role="SubtypeWarehouseType" EntitySet="SubtypeWarehouseType" />
             <End Role="SpareParts" EntitySet="SpareParts" />
           </AssociationSet>
           <AssociationSet Name="FK_SpareParts_WarehouseType" Association="Self.FK_SpareParts_WarehouseType">
@@ -409,10 +410,6 @@
             <End Role="Peripherals" EntitySet="Peripherals" />
             <End Role="PeripheralShelf" EntitySet="PeripheralShelf" />
           </AssociationSet>
-          <AssociationSet Name="FK_SpareParts_Peripherals" Association="dbLocalModel.FK_SpareParts_Peripherals">
-            <End Role="Peripherals" EntitySet="Peripherals" />
-            <End Role="SpareParts" EntitySet="SpareParts" />
-          </AssociationSet>
           <AssociationSet Name="FK_PeripheralShelf_Shelves" Association="dbLocalModel.FK_PeripheralShelf_Shelves">
             <End Role="Shelves" EntitySet="Shelves" />
             <End Role="PeripheralShelf" EntitySet="PeripheralShelf" />
@@ -453,6 +450,10 @@
             <End Role="WarehouseType" EntitySet="WarehouseType" />
             <End Role="SubtypeWarehouseType" EntitySet="SubtypeWarehouseType" />
           </AssociationSet>
+          <AssociationSet Name="FK_SpareParts_SubtypeWarehouseType" Association="dbLocalModel.FK_SpareParts_SubtypeWarehouseType">
+            <End Role="SubtypeWarehouseType" EntitySet="SubtypeWarehouseType" />
+            <End Role="SpareParts" EntitySet="SpareParts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Peripherals">
           <Key>
@@ -467,7 +468,6 @@
           <NavigationProperty Name="Rack" Relationship="dbLocalModel.FK_Peripherals_Rack" FromRole="Peripherals" ToRole="Rack" />
           <NavigationProperty Name="TypeHall" Relationship="dbLocalModel.FK_Peripherals_TypeHall" FromRole="Peripherals" ToRole="TypeHall" />
           <NavigationProperty Name="PeripheralShelf" Relationship="dbLocalModel.FK_PeripheralShelf_Peripherals" FromRole="Peripherals" ToRole="PeripheralShelf" />
-          <NavigationProperty Name="SpareParts" Relationship="dbLocalModel.FK_SpareParts_Peripherals" FromRole="Peripherals" ToRole="SpareParts" />
         </EntityType>
         <EntityType Name="PeripheralShelf">
           <Key>
@@ -539,10 +539,11 @@
           <Property Name="Count" Type="Int32" Nullable="false" />
           <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IDTypeWarehouse" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Peripherals" Relationship="dbLocalModel.FK_SpareParts_Peripherals" FromRole="SpareParts" ToRole="Peripherals" />
           <NavigationProperty Name="Rack" Relationship="dbLocalModel.FK_SpareParts_Rack" FromRole="SpareParts" ToRole="Rack" />
           <NavigationProperty Name="WarehouseType" Relationship="dbLocalModel.FK_SpareParts_WarehouseType" FromRole="SpareParts" ToRole="WarehouseType" />
           <NavigationProperty Name="SparePartsShelves" Relationship="dbLocalModel.FK_SparePartsShelves_SpareParts" FromRole="SpareParts" ToRole="SparePartsShelves" />
+          <Property Name="IDSubtypeWarehouse" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SubtypeWarehouseType" Relationship="dbLocalModel.FK_SpareParts_SubtypeWarehouseType" FromRole="SpareParts" ToRole="SubtypeWarehouseType" />
         </EntityType>
         <EntityType Name="SparePartsShelves">
           <Key>
@@ -562,6 +563,7 @@
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WarehouseTypeId" Type="Int32" />
           <NavigationProperty Name="WarehouseType" Relationship="dbLocalModel.FK_SubtypeWarehouseType_WarehouseType" FromRole="SubtypeWarehouseType" ToRole="WarehouseType" />
+          <NavigationProperty Name="SpareParts" Relationship="dbLocalModel.FK_SpareParts_SubtypeWarehouseType" FromRole="SubtypeWarehouseType" ToRole="SpareParts" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -638,18 +640,6 @@
             </Principal>
             <Dependent Role="PeripheralShelf">
               <PropertyRef Name="PeripheralID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SpareParts_Peripherals">
-          <End Type="dbLocalModel.Peripherals" Role="Peripherals" Multiplicity="1" />
-          <End Type="dbLocalModel.SpareParts" Role="SpareParts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Peripherals">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="SpareParts">
-              <PropertyRef Name="IDPeripherals" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -783,6 +773,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SpareParts_SubtypeWarehouseType">
+          <End Type="dbLocalModel.SubtypeWarehouseType" Role="SubtypeWarehouseType" Multiplicity="1" />
+          <End Type="dbLocalModel.SpareParts" Role="SpareParts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubtypeWarehouseType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SpareParts">
+              <PropertyRef Name="IDSubtypeWarehouse" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -857,6 +859,7 @@
           <EntitySetMapping Name="SpareParts">
             <EntityTypeMapping TypeName="dbLocalModel.SpareParts">
               <MappingFragment StoreEntitySet="SpareParts">
+                <ScalarProperty Name="IDSubtypeWarehouse" ColumnName="IDSubtypeWarehouse" />
                 <ScalarProperty Name="IDTypeWarehouse" ColumnName="IDTypeWarehouse" />
                 <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
                 <ScalarProperty Name="Count" ColumnName="Count" />

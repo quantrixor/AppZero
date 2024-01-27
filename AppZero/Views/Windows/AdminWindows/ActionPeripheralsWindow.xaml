@@ -8,8 +8,119 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow"
         FontSize="14" Loaded="Window_Loaded"
-        Title="Добавить / Редактировать данные Периферии" 
-        Height="340" Width="400">
+        Title="Управление данными зала" 
+        Height="440" Width="500">
+
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+        </Style>
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ButtonDefaultBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ButtonDefaulForeground}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="2"
+                         Background="{DynamicResource BorderBackgroud}"
+                         BorderThickness="2" />
+                <Border 
+                         Grid.Column="0"
+                         CornerRadius="2,0,0,2" 
+                         Margin="1" 
+                         Background="{DynamicResource BackgroundComboBox}" 
+                         BorderThickness="2" />
+                <Path 
+                     x:Name="Arrow"
+                     Grid.Column="1"     
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Data="M 0 0 L 4 4 L 8 0 Z"/>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <Border x:Name="PART_ContentHost" 
+                   Focusable="False" Background="{TemplateBinding Background}" />
+        </ControlTemplate>
+        <Style x:Key="{x:Type ComboBox}" TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton 
+                               Name="ToggleButton" 
+                               Template="{StaticResource ComboBoxToggleButton}" 
+                               Grid.Column="2" 
+                               Focusable="false"
+                               IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                               ClickMode="Press"
+                               Foreground="{DynamicResource PrimaryBackground}">
+                            </ToggleButton>
+                            <ContentPresenter
+                               Name="ContentSite"
+                               Content="{TemplateBinding SelectedItem}"
+                               ContentTemplate="{TemplateBinding ItemTemplate}"
+                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                               Margin="3,3,23,3"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                                    Style="{x:Null}" 
+                                    Template="{StaticResource ComboBoxTextBox}" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Center" 
+                                    Margin="3,3,23,3"
+                                    Focusable="True" 
+                                    Background="{DynamicResource BackgroundComboBox}"
+                                    Foreground="{DynamicResource ForegroundComboBox}"
+                                    Visibility="Hidden"
+                                    IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup 
+                               Name="Popup"
+                               Placement="Bottom"
+                               IsOpen="{TemplateBinding IsDropDownOpen}"
+                               AllowsTransparency="True" 
+                               Focusable="False"
+                               PopupAnimation="Slide">
+                                <Grid 
+                                   Name="DropDown"
+                                   SnapsToDevicePixels="True"                
+                                   MinWidth="{TemplateBinding ActualWidth}"
+                                   MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border 
+                                       x:Name="DropDownBorder"
+                                       BorderBrush="{DynamicResource BorderbrushComboBox}"
+                                       Background="{DynamicResource BackgroundComboBox}"
+                                       BorderThickness="1"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
     <Grid>
         <StackPanel VerticalAlignment="Center"
                     HorizontalAlignment="Center"
@@ -17,7 +128,7 @@
             <Label Content="Номер стеллажа: "/>
             <ComboBox 
                      Name="cmbRackNumber" SelectionChanged="cmbRackNumber_SelectionChanged"/>
-           
+
             <Label Content="Номер полки: "/>
             <ComboBox 
                      x:Name="cmbShelfNumber"/>
@@ -26,6 +137,11 @@
                      Text="{Binding Peripherals.Description}" 
                      Height="35"
                      TextWrapping="Wrap"/>
+            <Label Content="Тип:"/>
+            <ComboBox x:Name="cmbHallType"
+                      ItemsSource="{Binding typeHalls}"
+                      SelectedItem="{Binding Peripherals.TypeHall}"
+                      DisplayMemberPath="Titiel"/>
             <Label Content="Количество: "/>
             <TextBox Text="{Binding Peripherals.Count}"
                      Name="txbCount"
@@ -36,11 +152,11 @@
                         Margin="0,10,0,0">
                 <Button Content="Сохранить"
                         Name="btnSave"
-                        Width="125"
+                        Width="135"
                         Click="btnSave_Click"
                         Margin="0,0,5,0"/>
                 <Button Content="Отмнена"
-                        Width="125"
+                        Width="135"
                         Name="btnCancel"
                         Click="btnCancel_Click"/>
             </StackPanel>

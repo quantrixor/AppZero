@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using Word = Microsoft.Office.Interop.Word;
@@ -134,7 +135,7 @@ namespace AppZero.Views.Pages.AdminPages
         {
             // Поиск по следующим критериям: ID, Номер стеллажа, Номер полки и Количество на складе
             listDataPeripher.ItemsSource = AppData.db.Peripherals.Where(item => item.ID.ToString().Contains(txbSearchPeripher.Text) ||
-            item.Rack.Number.Contains(txbSearchPeripher.Text) || item.ShellRackNumber.Contains(txbSearchPeripher.Text) ||
+            item.Rack.Number.Contains(txbSearchPeripher.Text) || item.ShellRackNumberPeripherals.Contains(txbSearchPeripher.Text) ||
             item.Count.ToString().Contains(txbSearchPeripher.Text)).ToList();
         }
         // Сортировка данных зала по дате
@@ -197,8 +198,9 @@ namespace AppZero.Views.Pages.AdminPages
                 table.Cell(1, 2).Range.Text = "Номера полок";
                 table.Cell(1, 3).Range.Text = "Описание";
                 table.Cell(1, 4).Range.Text = "Тип";
-                table.Cell(1, 5).Range.Text = "Количество";
-                table.Cell(1, 6).Range.Text = "Дата";
+                table.Cell(1, 5).Range.Text = "Подтип";
+                table.Cell(1, 6).Range.Text = "Количество";
+                table.Cell(1, 7).Range.Text = "Дата";
 
                 int i = 2;
                 foreach (var item in listDataSpareParts)
@@ -206,9 +208,10 @@ namespace AppZero.Views.Pages.AdminPages
                     table.Cell(i, 1).Range.Text = item.Rack.Number;
                     table.Cell(i, 2).Range.Text = item.ShellRackNumber;
                     table.Cell(i, 3).Range.Text = item.Description;
-                    table.Cell(i, 4).Range.Text = item.Peripherals.Description;
-                    table.Cell(i, 5).Range.Text = item.Count.ToString();
-                    table.Cell(i, 6).Range.Text = item.DateAdded.ToString();
+                    table.Cell(i, 4).Range.Text = item.WarehouseType.Title;
+                    table.Cell(i, 5).Range.Text = item.SubtypeWarehouseType.Title;
+                    table.Cell(i, 6).Range.Text = item.Count.ToString();
+                    table.Cell(i, 7).Range.Text = item.DateAdded.ToString();
                     i++;
                 }
                 // Дата формирования отчета
@@ -259,7 +262,7 @@ namespace AppZero.Views.Pages.AdminPages
                 foreach (var item in listDataSpareParts)
                 {
                     table.Cell(i, 1).Range.Text = item.Rack.Number;
-                    table.Cell(i, 2).Range.Text = item.ShellRackNumber;
+                    table.Cell(i, 2).Range.Text = item.ShellRackNumberPeripherals;
                     table.Cell(i, 3).Range.Text = item.Description;
                     table.Cell(i, 4).Range.Text = item.Count.ToString();
                     table.Cell(i, 5).Range.Text = item.DateAdded.ToString();
@@ -318,7 +321,7 @@ namespace AppZero.Views.Pages.AdminPages
                 actionSparePartsWindow.ShowDialog();
             }
         }
-        // Удаление данных запчастей и устройств
+        // Удаление данных склада
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -329,8 +332,11 @@ namespace AppZero.Views.Pages.AdminPages
                     if (MessageBox.Show("Вы действительно хотите удалить выбранный объект из Базы данных?", "Внимание! Данные удалятся навсегда.",
                         MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                     {
-                        var shelvesSpare = AppData.db.SparePartsShelves.FirstOrDefault(item => item.IDSpareParts == item.ID);
-                        AppData.db.SparePartsShelves.Remove(shelvesSpare);
+                        var shelvesSpare = AppData.db.SparePartsShelves.FirstOrDefault(item => item.IDSpareParts == selectedSpareParts.ID);
+                        if (shelvesSpare != null)
+                        {
+                            AppData.db.SparePartsShelves.Remove(shelvesSpare);
+                        }
                         AppData.db.SpareParts.Remove(selectedSpareParts);
                         AppData.db.SaveChanges();
                         Page_Loaded(null, null);
@@ -338,9 +344,28 @@ namespace AppZero.Views.Pages.AdminPages
                     }
                 }
             }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        sb.AppendFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        sb.AppendLine();
+                    }
+                }
+                MessageBox.Show(sb.ToString(), "Entity Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                var innerException = ex;
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+                MessageBox.Show($"Error: {ex.Message} Inner exception: {innerException.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
         }
         // Переход в окно добавления данных периферии
@@ -425,12 +450,13 @@ namespace AppZero.Views.Pages.AdminPages
 
                 AppData.db.SaveChanges();
                 MessageBox.Show("Стеллаж добавлен в БД", "Успешно!", MessageBoxButton.OK, MessageBoxImage.Information);
+                txbNumSt.Text = "";
+                txbCountSt.Text = "";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
 
         }
 

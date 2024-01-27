@@ -131,6 +131,7 @@
     </Compile>
     <Compile Include="Settings\CatchException.cs" />
     <Compile Include="Settings\Logger.cs" />
+    <Compile Include="Settings\ReturnIDObject.cs" />
     <Compile Include="Views\Windows\AdminWindows\ActionTypeWarehouse.xaml.cs">
       <DependentUpon>ActionTypeWarehouse.xaml</DependentUpon>
     </Compile>

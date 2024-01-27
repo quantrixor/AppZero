@@ -10,7 +10,7 @@ namespace AppZero.Model
     public partial class Peripherals
     {
 
-        public string ShellRackNumber
+        public string ShellRackNumberPeripherals
         {
             get
             {

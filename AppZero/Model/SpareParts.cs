@@ -27,11 +27,12 @@ namespace AppZero.Model
         public int Count { get; set; }
         public System.DateTime DateAdded { get; set; }
         public int IDTypeWarehouse { get; set; }
+        public int IDSubtypeWarehouse { get; set; }
     
-        public virtual Peripherals Peripherals { get; set; }
         public virtual Rack Rack { get; set; }
         public virtual WarehouseType WarehouseType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SparePartsShelves> SparePartsShelves { get; set; }
+        public virtual SubtypeWarehouseType SubtypeWarehouseType { get; set; }
     }
 }

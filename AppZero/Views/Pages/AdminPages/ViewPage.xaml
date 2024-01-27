@@ -10,6 +10,7 @@
       Title="Форма администратора">
 
     <Page.Resources>
+       
 
         <Style TargetType="TextBlock">
             <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
@@ -158,28 +159,34 @@
     <Grid>
         <TabControl x:Name="mainTabControl">
             <TabControl.Resources>
-
-                <!-- Стиль для всех вкладок -->
-                <Style TargetType="TabItem">
-                    <Setter Property="Foreground" Value="{DynamicResource TabItemForeground}"/>
-                    <Setter Property="Padding" Value="10"/>
-                    <Style.Triggers>
-                        <!-- Стиль для выбранной вкладки -->
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource TabItemSelectedBackground}"/>
-                        </Trigger>
-                        <!-- Стиль для невыбранной вкладки -->
-                        <Trigger Property="IsSelected" Value="False">
-                            <Setter Property="Background" Value="{DynamicResource TabControlBackground}"/>
-                        </Trigger>
-                    </Style.Triggers>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="Background" Value="{DynamicResource TabControlBackground}" />
+                    <Setter Property="Foreground" Value="{DynamicResource TabItemForeground}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabItem}">
+                                <Border Name="Border" Background="{TemplateBinding Background}">
+                                    <ContentPresenter x:Name="ContentSite"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       ContentSource="Header"
+                                                       Margin="12,2,12,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource TabItemSelectedBackground}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource TabItemForeground}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </TabControl.Resources>
             <!--Регистрация сотрудников-->
             <TabItem Width="200" Header="Регистрация сотрудника">
                 <TabItem.Content>
                     <Grid>
-
                         <StackPanel Width="200"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
@@ -329,9 +336,10 @@
                                     <DataGridTextColumn Header="Номер стеллажа" Binding="{Binding Rack.Number}"/>
                                     <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumber}"/>
                                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
-                                    <DataGridTextColumn Header="Тип" Binding="{Binding Peripherals.Description}"/>
+                                    <DataGridTextColumn Header="Тип" Binding="{Binding WarehouseType.Title}"/>
+                                    <DataGridTextColumn Header="Подтип" Binding="{Binding SubtypeWarehouseType.Title}"/>
                                     <DataGridTextColumn Header="Количество" Binding="{Binding Count}"/>
-                                    <DataGridTextColumn Header="Дата добавления" Binding="{Binding DateAdded}"/>
+                                    <DataGridTextColumn Header="Дата добавления" Binding="{Binding DateAdded, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <!--Панель кнопок-->
@@ -427,10 +435,10 @@
                             <DataGrid Name="listDataPeripher" AutoGenerateColumns="False" ColumnWidth="*">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Номер стеллажа" Binding="{Binding Rack.Number}"/>
-                                    <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumber}"/>
+                                    <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumberPeripherals}"/>
                                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
                                     <DataGridTextColumn Header="Количество" Binding="{Binding Count}"/>
-                                    <DataGridTextColumn Header="Дата" Binding="{Binding DateAdded}"/>
+                                    <DataGridTextColumn Header="Дата" Binding="{Binding DateAdded, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <!--Панель кнопок-->

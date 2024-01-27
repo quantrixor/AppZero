@@ -7,19 +7,181 @@
       mc:Ignorable="d" FontSize="15" Loaded="Page_Loaded"
       d:DesignHeight="450" d:DesignWidth="830"
       Title="Форма сотрудника">
+    <Page.Resources>
 
+        <Style TargetType="TextBlock">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ButtonDefaultBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ButtonDefaulForeground}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource PrimaryDefaultBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryDefaultForeground}"/>
+        </Style>
+
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource DefaultDataGridBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource DefaultDataGridForeground}"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+                    <Setter Property="Background" Value="{DynamicResource BorderBackgroud}"/>
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBackground}" />
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="2"
+                       Background="{DynamicResource BorderBackgroud}"
+                       BorderThickness="2" />
+                <Border 
+                       Grid.Column="0"
+                       CornerRadius="2,0,0,2" 
+                       Margin="1" 
+                       Background="{DynamicResource BackgroundComboBox}" 
+                       BorderThickness="2" />
+                <Path 
+                   x:Name="Arrow"
+                   Grid.Column="1"     
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Data="M 0 0 L 4 4 L 8 0 Z"/>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <Border x:Name="PART_ContentHost" 
+                 Focusable="False" Background="{TemplateBinding Background}" />
+        </ControlTemplate>
+        <Style x:Key="{x:Type ComboBox}" TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton 
+                                 Name="ToggleButton" 
+                                 Template="{StaticResource ComboBoxToggleButton}" 
+                                 Grid.Column="2" 
+                                 Focusable="false"
+                                 IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                 ClickMode="Press"
+                                 Foreground="{DynamicResource PrimaryBackground}">
+                            </ToggleButton>
+                            <ContentPresenter
+                                 Name="ContentSite"
+                                 Content="{TemplateBinding SelectedItem}"
+                                 ContentTemplate="{TemplateBinding ItemTemplate}"
+                                 ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                 Margin="3,3,23,3"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Left" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                                  Style="{x:Null}" 
+                                  Template="{StaticResource ComboBoxTextBox}" 
+                                  HorizontalAlignment="Left" 
+                                  VerticalAlignment="Center" 
+                                  Margin="3,3,23,3"
+                                  Focusable="True" 
+                                  Background="{DynamicResource BackgroundComboBox}"
+                                  Foreground="{DynamicResource ForegroundComboBox}"
+                                  Visibility="Hidden"
+                                  IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup 
+                                 Name="Popup"
+                                 Placement="Bottom"
+                                 IsOpen="{TemplateBinding IsDropDownOpen}"
+                                 AllowsTransparency="True" 
+                                 Focusable="False"
+                                 PopupAnimation="Slide">
+                                <Grid 
+                                     Name="DropDown"
+                                     SnapsToDevicePixels="True"                
+                                     MinWidth="{TemplateBinding ActualWidth}"
+                                     MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border 
+                                         x:Name="DropDownBorder"
+                                         BorderBrush="{DynamicResource BorderbrushComboBox}"
+                                         Background="{DynamicResource BackgroundComboBox}"
+                                         BorderThickness="1"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+            </Style.Triggers>
+        </Style>
+
+    </Page.Resources>
     <Grid>
         <TabControl>
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="Background" Value="{DynamicResource TabControlBackground}" />
+                    <Setter Property="Foreground" Value="{DynamicResource TabItemForeground}" />
+                    <Setter Property="Width" Value="250" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabItem}">
+                                <Border Name="Border" Background="{TemplateBinding Background}">
+                                    <ContentPresenter x:Name="ContentSite"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           ContentSource="Header"
+                                           Margin="12,2,12,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource TabItemSelectedBackground}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource TabItemForeground}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
             <!--База запчастей и устройств-->
-            <TabItem>
-                <TabItem.Header>
-                    <Label Height="40"
-                           Width="190"
-                           FontSize="15"
-                           Content="Запчасти и устройства"
-                           VerticalContentAlignment="Center"/>
-
-                </TabItem.Header>
+            <TabItem Header="Склад">
                 <TabItem.Content>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -63,9 +225,10 @@
                                     <DataGridTextColumn Header="Номер стеллажа" Binding="{Binding Rack.Number}"/>
                                     <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumber}"/>
                                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
-                                    <DataGridTextColumn Header="Тип" Binding="{Binding Peripherals.Description}"/>
+                                    <DataGridTextColumn Header="Тип" Binding="{Binding WarehouseType.Title}"/>
+                                    <DataGridTextColumn Header="Подтип" Binding="{Binding SubtypeWarehouseType.Title}"/>
                                     <DataGridTextColumn Header="Количество" Binding="{Binding Count}"/>
-                                    <DataGridTextColumn Header="Дата добавления" Binding="{Binding DateAdded}"/>
+                                    <DataGridTextColumn Header="Дата добавления" Binding="{Binding DateAdded, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <!--Панель кнопок-->
@@ -110,15 +273,8 @@
                 </TabItem.Content>
             </TabItem>
             <!--База учёта периферии-->
-            <TabItem>
-                <TabItem.Header>
-                    <Label Height="40"
-                           Width="190"
-                           FontSize="15"
-                           Content="Учёт периферии"
-                           VerticalContentAlignment="Center"/>
-
-                </TabItem.Header>
+            <TabItem Header="Зал">
+                
                 <TabItem.Content>
                     <Grid>
                         <Grid.RowDefinitions>

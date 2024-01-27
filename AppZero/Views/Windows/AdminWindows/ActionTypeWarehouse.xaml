@@ -10,10 +10,10 @@
 
     <Window.Resources>
 
-        <Style TargetType="TextBlock">
+        <Style TargetType="Grid">
             <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
         </Style>
+        
         <Style TargetType="Label">
             <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
             <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
@@ -28,37 +28,6 @@
             <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
             <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-
-        <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="{DynamicResource PrimaryDefaultBackground}"/>
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryDefaultForeground}"/>
-        </Style>
-
-        <Style TargetType="Grid">
-            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
-        </Style>
-
-        <Style TargetType="DataGrid">
-            <Setter Property="Background" Value="{DynamicResource DefaultDataGridBackground}"/>
-            <Setter Property="Foreground" Value="{DynamicResource DefaultDataGridForeground}"/>
-        </Style>
-
-        <Style TargetType="DataGridRow">
-            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
-        </Style>
-
-        <Style TargetType="DataGridCell">
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
-                    <Setter Property="Background" Value="{DynamicResource BorderBackgroud}"/>
-                </Trigger>
-            </Style.Triggers>
-            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}" />
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBackground}" />
-            <Setter Property="BorderThickness" Value="0"/>
         </Style>
 
 

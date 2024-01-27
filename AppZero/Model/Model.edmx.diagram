@@ -10,19 +10,18 @@
         <EntityTypeShape EntityType="dbLocalModel.Position" Width="1.5" PointX="10" PointY="5.375" />
         <EntityTypeShape EntityType="dbLocalModel.Rack" Width="1.5" PointX="0.75" PointY="4.625" />
         <EntityTypeShape EntityType="dbLocalModel.Rule" Width="1.5" PointX="7.75" PointY="1.375" />
-        <EntityTypeShape EntityType="dbLocalModel.Shelves" Width="1.5" PointX="3" PointY="8.25" />
+        <EntityTypeShape EntityType="dbLocalModel.Shelves" Width="1.5" PointX="1.875" PointY="7.25" />
         <EntityTypeShape EntityType="dbLocalModel.SignIn" Width="1.5" PointX="10" PointY="1.125" />
-        <EntityTypeShape EntityType="dbLocalModel.SpareParts" Width="1.5" PointX="5.25" PointY="2.125" />
-        <EntityTypeShape EntityType="dbLocalModel.SparePartsShelves" Width="1.5" PointX="7.5" PointY="5.25" />
-        <EntityTypeShape EntityType="dbLocalModel.SubtypeWarehouseType" Width="1.5" PointX="5.25" PointY="9.75" />
+        <EntityTypeShape EntityType="dbLocalModel.SpareParts" Width="1.5" PointX="5.375" PointY="2" />
+        <EntityTypeShape EntityType="dbLocalModel.SparePartsShelves" Width="1.5" PointX="0.5" PointY="11.25" />
+        <EntityTypeShape EntityType="dbLocalModel.SubtypeWarehouseType" Width="1.5" PointX="5.25" PointY="12" />
         <EntityTypeShape EntityType="dbLocalModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="8.75" />
         <EntityTypeShape EntityType="dbLocalModel.TypeHall" Width="1.5" PointX="0.75" PointY="1.875" />
         <EntityTypeShape EntityType="dbLocalModel.User" Width="1.5" PointX="12.25" PointY="1" />
-        <EntityTypeShape EntityType="dbLocalModel.WarehouseType" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="dbLocalModel.WarehouseType" Width="1.5" PointX="5.625" PointY="9.5" />
         <AssociationConnector Association="dbLocalModel.FK_Peripherals_Rack" />
         <AssociationConnector Association="dbLocalModel.FK_Peripherals_TypeHall" />
         <AssociationConnector Association="dbLocalModel.FK_PeripheralShelf_Peripherals" />
-        <AssociationConnector Association="dbLocalModel.FK_SpareParts_Peripherals" />
         <AssociationConnector Association="dbLocalModel.FK_PeripheralShelf_Shelves" />
         <AssociationConnector Association="dbLocalModel.FK_User_Position" />
         <AssociationConnector Association="dbLocalModel.FK_Shelves_Rack" />
@@ -33,6 +32,7 @@
         <AssociationConnector Association="dbLocalModel.FK_SpareParts_WarehouseType" />
         <AssociationConnector Association="dbLocalModel.FK_SparePartsShelves_SpareParts" />
         <AssociationConnector Association="dbLocalModel.FK_SubtypeWarehouseType_WarehouseType" />
+        <AssociationConnector Association="dbLocalModel.FK_SpareParts_SubtypeWarehouseType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,12 +15,14 @@ namespace AppZero.Views.Windows.AdminWindows
     {
         public List<Rack> GetRack { get; set; }
         public Peripherals Peripherals { get; set; }
+        
+        public List<TypeHall> typeHalls { get; set; }
+        
         public ActionPeripheralsWindow(Peripherals peripherals)
         {
             InitializeComponent();
             Peripherals = peripherals;
-
-
+            typeHalls = AppData.db.TypeHall.ToList();
             this.DataContext = this;
         }
 
@@ -29,10 +31,10 @@ namespace AppZero.Views.Windows.AdminWindows
         {
             try
             {
-                if (txbCount.Text == "0" || txbDescription.Text == "" || cmbRackNumber.Text == "" || cmbShelfNumber.Text == "")
+                if (txbCount.Text == "0" || txbDescription.Text == "" || cmbRackNumber.Text == "" || cmbShelfNumber.Text == "" || cmbHallType.Text == "")
                     throw new Exception("ВНИМАНИЕ! Пустые значения не допустимы.");
 
-                int numberOfShelves = int.Parse(txbCount.Text); // Получите количество полок, на которых должна быть размещена периферия
+                int numberOfShelves = int.Parse(txbCount.Text); 
 
                 if (Peripherals.ID == 0)
                 {
@@ -40,7 +42,7 @@ namespace AppZero.Views.Windows.AdminWindows
                     Peripherals.IDRack = (int)cmbRackNumber.SelectedValue;
 
                     AppData.db.Peripherals.Add(Peripherals);
-                    AppData.db.SaveChanges(); // Сохраните изменения, чтобы получить ID для добавленной периферии
+                    AppData.db.SaveChanges();
 
                     int firstShelfIndex = cmbShelfNumber.SelectedIndex; // Индекс выбранной полки
                     var availableShelves = AppData.db.Shelves.Where(s => s.IDRack == Peripherals.IDRack).OrderBy(s => s.ID).ToList(); // Список доступных полок для выбранного стеллажа
@@ -61,7 +63,6 @@ namespace AppZero.Views.Windows.AdminWindows
                         }
                     }
 
-                    // Сохранение периферии на указанных полках
                     for (int i = 0; i < numberOfShelves; i++)
                     {
                         int currentShelfId = availableShelves[firstShelfIndex + i].ID;

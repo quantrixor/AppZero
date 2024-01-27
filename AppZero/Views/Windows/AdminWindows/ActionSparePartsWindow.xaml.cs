@@ -1,8 +1,10 @@
 ﻿using AppZero.Context;
 using AppZero.Model;
+using AppZero.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -21,22 +23,38 @@ namespace AppZero.Views.Windows.AdminWindows
             this.SpareParts = spareParts;
             TypeObjects = AppData.db.Peripherals.ToList();
 
+            cmbWarehouseType.ItemsSource = AppData.db.WarehouseType.ToList();
+
             this.DataContext = this;
+
+            if(spareParts != null)
+            {
+                cmbRackNumber.SelectedItem = spareParts.Rack;
+                cmbWarehouseType.SelectedItem = spareParts.WarehouseType;
+                cmbSubType.SelectedItem = spareParts.SubtypeWarehouseType;
+            }
         }
+
+
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (txbCount.Text == "0" || txbDescription.Text == "" || cmbRackNumber.Text == "" || cmbShelfNumber.Text == "" || cmbTypeObject.Text == "")
+                if (txbCount.Text == "0" || txbDescription.Text == "" || cmbRackNumber.Text == "" || cmbShelfNumber.Text == "")
                     throw new Exception("ВНИМАНИЕ! Пустые значения не допустимы.");
 
                 int numberOfShelves = int.Parse(txbCount.Text); // Получите количество полок, на которых должна быть размещена периферия
 
                 if (SpareParts.ID == 0)
                 {
-                    SpareParts.DateAdded = DateTime.Now;
-                    SpareParts.IDRack = (int)cmbRackNumber.SelectedValue; // Задайте значение IDRack для SpareParts
+                    SpareParts.DateAdded = DateTime.Today;
+                    SpareParts.IDRack = ReturnIDObject.ReturnRackID(cmbRackNumber) ?? 0; // Задайте значение IDRack для SpareParts
+                    SpareParts.IDTypeWarehouse = ReturnIDObject.ReturnWarehouseType(cmbWarehouseType) ?? 0;
+                    SpareParts.IDSubtypeWarehouse = ReturnIDObject.ReturnSubWarehouseType(cmbSubType) ?? 0;
+                    SpareParts.Count = int.Parse(txbCount.Text);
+                    SpareParts.Description = txbDescription.Text;
+                    
                     AppData.db.SpareParts.Add(SpareParts);
 
                     int firstShelfIndex = cmbShelfNumber.SelectedIndex; // Индекс выбранной полки
@@ -44,7 +62,7 @@ namespace AppZero.Views.Windows.AdminWindows
 
                     if (firstShelfIndex + numberOfShelves > availableShelves.Count)
                     {
-                        throw new Exception("Недостаточно свободных полок для размещения запчастей");
+                        throw new Exception("Недостаточно свободных полок.");
                     }
 
                     // Проверка занятых полок
@@ -67,7 +85,35 @@ namespace AppZero.Views.Windows.AdminWindows
                     }
 
                 }
-                AppData.db.SaveChanges();
+                try
+                {
+
+                    AppData.db.SaveChanges();
+
+                }
+                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            sb.AppendFormat("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                            sb.AppendLine();
+                        }
+                    }
+                    MessageBox.Show(sb.ToString(), "Entity Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (Exception ex)
+                {
+                    var innerException = ex;
+                    while (innerException.InnerException != null)
+                    {
+                        innerException = innerException.InnerException;
+                    }
+                    MessageBox.Show($"Error: {ex.Message} Inner exception: {innerException.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 MessageBox.Show("Данные сохранены в базе данных!", "Операция прошла успешно", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }
@@ -107,6 +153,15 @@ namespace AppZero.Views.Windows.AdminWindows
             cmbRackNumber.DisplayMemberPath = "Number";
             cmbRackNumber.SelectedValuePath = "ID";
 
+        }
+
+        private void cmbWarehouseType_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var selectedItem = cmbWarehouseType.SelectedItem as WarehouseType;
+            if (selectedItem != null)
+            {
+                cmbSubType.ItemsSource = AppData.db.SubtypeWarehouseType.Where(item => item.WarehouseTypeId == selectedItem.ID).ToList();
+            }
         }
     }
 }

@@ -40,7 +40,7 @@ namespace AppZero.Views.Pages.EmployePages
         {
             // Поиск по следующим критериям: ID, Номер стеллажа, Номер полки и Количество на складе
             listDataPeripher.ItemsSource = AppData.db.Peripherals.Where(item => item.ID.ToString().Contains(txbSearchPeripher.Text) ||
-            item.Rack.Number.Contains(txbSearchPeripher.Text) || item.ShellRackNumber.Contains(txbSearchPeripher.Text) ||
+            item.Rack.Number.Contains(txbSearchPeripher.Text) || item.ShellRackNumberPeripherals.Contains(txbSearchPeripher.Text) ||
             item.Count.ToString().Contains(txbSearchPeripher.Text)).ToList();
         }
 
@@ -73,13 +73,14 @@ namespace AppZero.Views.Pages.EmployePages
                 var table = document.Tables.Add(tableRange, listDataSpareParts.Count + 1, 6);
                 table.Range.Font.Size = 10;
                 table.Borders.Enable = 1;
-                table.Title = "Данные";
+                table.Title = "Данные склада";
                 table.Cell(1, 1).Range.Text = "Номер стеллажа";
                 table.Cell(1, 2).Range.Text = "Номер полки";
                 table.Cell(1, 3).Range.Text = "Описание";
                 table.Cell(1, 4).Range.Text = "Тип";
-                table.Cell(1, 5).Range.Text = "Количество";
-                table.Cell(1, 6).Range.Text = "Дата";
+                table.Cell(1, 5).Range.Text = "Подтип";
+                table.Cell(1, 6).Range.Text = "Количество";
+                table.Cell(1, 7).Range.Text = "Дата";
 
                 int i = 2;
                 foreach (var item in listDataSpareParts)
@@ -87,9 +88,10 @@ namespace AppZero.Views.Pages.EmployePages
                     table.Cell(i, 1).Range.Text = item.Rack.Number;
                     table.Cell(i, 2).Range.Text = item.ShellRackNumber;
                     table.Cell(i, 3).Range.Text = item.Description;
-                    table.Cell(i, 4).Range.Text = item.Peripherals.Description;
-                    table.Cell(i, 5).Range.Text = item.Count.ToString();
-                    table.Cell(i, 6).Range.Text = item.DateAdded.ToString();
+                    table.Cell(i, 4).Range.Text = item.WarehouseType.Title;
+                    table.Cell(i, 5).Range.Text = item.SubtypeWarehouseType.Title;
+                    table.Cell(i, 6).Range.Text = item.Count.ToString();
+                    table.Cell(i, 7).Range.Text = item.DateAdded.ToString();
                     i++;
                 }
                 document.SaveAs2($"{Environment.CurrentDirectory}\\EmpData.pdf", Word.WdSaveFormat.wdFormatPDF);
@@ -127,7 +129,7 @@ namespace AppZero.Views.Pages.EmployePages
                 foreach (var item in listDataSpareParts)
                 {
                     table.Cell(i, 1).Range.Text = item.Rack.Number;
-                    table.Cell(i, 2).Range.Text = item.ShellRackNumber;
+                    table.Cell(i, 2).Range.Text = item.ShellRackNumberPeripherals;
                     table.Cell(i, 3).Range.Text = item.Description;
                     table.Cell(i, 4).Range.Text = item.Count.ToString();
                     table.Cell(i, 5).Range.Text = item.DateAdded.ToString();
