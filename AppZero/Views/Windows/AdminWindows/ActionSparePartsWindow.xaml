@@ -125,13 +125,12 @@
                     HorizontalAlignment="Center"
                     Width="255">
             <Label Content="Номер стеллажа: "/>
-            <ComboBox Name="cmbRackNumber" SelectionChanged="cmbRackNumber_SelectionChanged"/>
+            <ComboBox x:Name="cmbRackNumber" DisplayMemberPath="Number" SelectionChanged="cmbRackNumber_SelectionChanged"/>
 
             <Label Content="Номер полки: "/>
             <ComboBox x:Name="cmbShelfNumber"/>
             <Label Content="Описание: "/>
             <TextBox Name="txbDescription"
-                     Text="{Binding SpareParts.Description}" 
                      Height="35"
                      TextWrapping="Wrap"/>
 
@@ -145,8 +144,7 @@
             </ComboBox>
 
             <Label Content="Количество: "/>
-            <TextBox Text="{Binding SpareParts.Count}"
-                     Name="txbCount"
+            <TextBox x:Name="txbCount"
                      PreviewTextInput="TextBox_PreviewTextInput"/>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"

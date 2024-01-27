@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="650801881e074992951aaf3447a0b1d8" Name="Diagram1">
-        <EntityTypeShape EntityType="dbLocalModel.Peripherals" Width="1.5" PointX="3" PointY="4.125" />
-        <EntityTypeShape EntityType="dbLocalModel.PeripheralShelf" Width="1.5" PointX="5.25" PointY="6.375" />
+        <EntityTypeShape EntityType="dbLocalModel.Peripherals" Width="1.5" PointX="1.5" PointY="4.125" />
+        <EntityTypeShape EntityType="dbLocalModel.PeripheralShelf" Width="1.5" PointX="2.75" PointY="6.375" />
         <EntityTypeShape EntityType="dbLocalModel.Position" Width="1.5" PointX="10" PointY="5.375" />
-        <EntityTypeShape EntityType="dbLocalModel.Rack" Width="1.5" PointX="0.75" PointY="4.625" />
+        <EntityTypeShape EntityType="dbLocalModel.Rack" Width="1.5" PointX="8.125" PointY="3.875" />
         <EntityTypeShape EntityType="dbLocalModel.Rule" Width="1.5" PointX="7.75" PointY="1.375" />
-        <EntityTypeShape EntityType="dbLocalModel.Shelves" Width="1.5" PointX="1.875" PointY="7.25" />
+        <EntityTypeShape EntityType="dbLocalModel.Shelves" Width="1.5" PointX="5.875" PointY="5.875" />
         <EntityTypeShape EntityType="dbLocalModel.SignIn" Width="1.5" PointX="10" PointY="1.125" />
         <EntityTypeShape EntityType="dbLocalModel.SpareParts" Width="1.5" PointX="5.375" PointY="2" />
         <EntityTypeShape EntityType="dbLocalModel.SparePartsShelves" Width="1.5" PointX="0.5" PointY="11.25" />
