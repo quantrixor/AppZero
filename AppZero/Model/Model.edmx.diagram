@@ -5,20 +5,20 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="650801881e074992951aaf3447a0b1d8" Name="Diagram1">
-        <EntityTypeShape EntityType="dbLocalModel.Peripherals" Width="1.5" PointX="1.5" PointY="4.125" />
-        <EntityTypeShape EntityType="dbLocalModel.PeripheralShelf" Width="1.5" PointX="2.75" PointY="6.375" />
+        <EntityTypeShape EntityType="dbLocalModel.Peripherals" Width="1.5" PointX="0.625" PointY="4.125" />
+        <EntityTypeShape EntityType="dbLocalModel.PeripheralShelf" Width="1.5" PointX="1.75" PointY="7.375" />
         <EntityTypeShape EntityType="dbLocalModel.Position" Width="1.5" PointX="10" PointY="5.375" />
         <EntityTypeShape EntityType="dbLocalModel.Rack" Width="1.5" PointX="8.125" PointY="3.875" />
         <EntityTypeShape EntityType="dbLocalModel.Rule" Width="1.5" PointX="7.75" PointY="1.375" />
         <EntityTypeShape EntityType="dbLocalModel.Shelves" Width="1.5" PointX="5.875" PointY="5.875" />
         <EntityTypeShape EntityType="dbLocalModel.SignIn" Width="1.5" PointX="10" PointY="1.125" />
-        <EntityTypeShape EntityType="dbLocalModel.SpareParts" Width="1.5" PointX="5.375" PointY="2" />
+        <EntityTypeShape EntityType="dbLocalModel.SpareParts" Width="1.5" PointX="5.75" PointY="0.5" />
         <EntityTypeShape EntityType="dbLocalModel.SparePartsShelves" Width="1.5" PointX="0.5" PointY="11.25" />
-        <EntityTypeShape EntityType="dbLocalModel.SubtypeWarehouseType" Width="1.5" PointX="5.25" PointY="12" />
+        <EntityTypeShape EntityType="dbLocalModel.SubtypeWarehouseType" Width="1.5" PointX="3.375" PointY="3" />
         <EntityTypeShape EntityType="dbLocalModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="8.75" />
         <EntityTypeShape EntityType="dbLocalModel.TypeHall" Width="1.5" PointX="0.75" PointY="1.875" />
         <EntityTypeShape EntityType="dbLocalModel.User" Width="1.5" PointX="12.25" PointY="1" />
-        <EntityTypeShape EntityType="dbLocalModel.WarehouseType" Width="1.5" PointX="5.625" PointY="9.5" />
+        <EntityTypeShape EntityType="dbLocalModel.WarehouseType" Width="1.5" PointX="2.875" PointY="0.5" />
         <AssociationConnector Association="dbLocalModel.FK_Peripherals_Rack" />
         <AssociationConnector Association="dbLocalModel.FK_Peripherals_TypeHall" />
         <AssociationConnector Association="dbLocalModel.FK_PeripheralShelf_Peripherals" />

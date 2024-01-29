@@ -3,7 +3,9 @@ using AppZero.Model;
 using AppZero.Views.Windows.AdminWindows;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -69,12 +71,17 @@ namespace AppZero.Views.Pages.EmployePages
         {
             ListDataSpareParts.ItemsSource = AppData.db.SpareParts.ToList();
             listDataPeripher.ItemsSource = AppData.db.Peripherals.ToList();
+            FilterTypeHallComboBox.ItemsSource = AppData.db.TypeHall.ToList();
+            LoadWarehouseTypes();
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             sortDate.SelectedDate = null;
             sortDatePeripher.SelectedDate = null;
+            FilterTypeHallComboBox.SelectedItem = null;
+            FilterWarehouseType.SelectedItem = null;
+            FilterSubypeWarehouse.SelectedItem = null;
             Page_Loaded(null, null);
         }
         private void ExportSparePartsDataPDF()
@@ -203,84 +210,58 @@ namespace AppZero.Views.Pages.EmployePages
                 MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+        // Фильтрация по типу зала
+        private void FilterTypeHallComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedTypeHall = FilterTypeHallComboBox.SelectedItem as TypeHall;
 
-        // Переход в окно добавления данных склада
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            ActionSparePartsWindow actionSparePartsWindow = new ActionSparePartsWindow(new SpareParts());
-            actionSparePartsWindow.ShowDialog();
-        }
-        // Переход в окно редактирования данных склада
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
-        {
-            var selectedSpareParts = (SpareParts)ListDataSpareParts.SelectedItem;
-            if (selectedSpareParts != null)
+            if (selectedTypeHall != null)
             {
-                ActionSparePartsWindow actionSparePartsWindow = new ActionSparePartsWindow(selectedSpareParts);
-                actionSparePartsWindow.ShowDialog();
+                var filteredPeripherals = AppData.db.Peripherals
+                                                   .Where(p => p.IDTypeHall == selectedTypeHall.ID)
+                                                   .ToList();
+
+                listDataPeripher.ItemsSource = filteredPeripherals;
             }
         }
-        // Удаление данных склада
-        private void btnRemove_Click(object sender, RoutedEventArgs e)
+
+        private void LoadWarehouseTypes()
         {
-            try
+            var types = AppData.db.WarehouseType.ToList();
+            FilterWarehouseType.ItemsSource = types;
+        }
+
+        // Фильтрация по подтипу склада
+        private void FilterSubypeWarehouse_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FilterSubypeWarehouse.SelectedValue != null)
             {
-                var selectedSpareParts = (SpareParts)ListDataSpareParts.SelectedItem;
-                if (selectedSpareParts != null)
-                {
-                    if (MessageBox.Show("Вы действительно хотите удалить выбранный объект из Базы данных?", "Внимание! Данные удалятся навсегда.",
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                    {
-                        AppData.db.SpareParts.Remove(selectedSpareParts);
-                        AppData.db.SaveChanges();
-                        Page_Loaded(null, null);
-                        MessageBox.Show("Данные успешно удалились!", "Операция выполнена", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                int subtypeId = (int)FilterSubypeWarehouse.SelectedValue;
+                var spareParts = AppData.db.SpareParts.Where(sp => sp.IDSubtypeWarehouse == subtypeId).ToList();
+                ListDataSpareParts.ItemsSource = spareParts;
             }
         }
-        // Переход в окно добавления данных зала
-        private void btnAddPeripherals_Click(object sender, RoutedEventArgs e)
+
+        // Фильтрация по типу склада
+        private void FilterWarehouseType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ActionPeripheralsWindow actionPeripheralsWindow = new ActionPeripheralsWindow(new Peripherals());
-            actionPeripheralsWindow.ShowDialog();
-        }
-        // Переход в окно редактирования данных зала
-        private void btnEditPeripherals_Click(object sender, RoutedEventArgs e)
-        {
-            var selectedPeripherals = (Peripherals)listDataPeripher.SelectedItem;
-            if (selectedPeripherals != null)
+            // Сначала очищаем ComboBox подтипов склада
+            FilterSubypeWarehouse.ItemsSource = null;
+            FilterSubypeWarehouse.SelectedItem = null;
+
+            if (FilterWarehouseType.SelectedValue != null)
             {
-                ActionPeripheralsWindow actionPeripheralsWindow = new ActionPeripheralsWindow(selectedPeripherals);
-                actionPeripheralsWindow.ShowDialog();
+                int typeId = (int)FilterWarehouseType.SelectedValue;
+
+                // Загружаем подтипы, соответствующие выбранному типу
+                var subtypes = AppData.db.SubtypeWarehouseType.Where(st => st.WarehouseTypeId == typeId).ToList();
+                FilterSubypeWarehouse.ItemsSource = subtypes;
+
+                // Фильтруем запчасти по выбранному типу склада
+                var spareParts = AppData.db.SpareParts.Where(sp => sp.IDTypeWarehouse == typeId).ToList();
+                ListDataSpareParts.ItemsSource = spareParts;
             }
         }
-        // Удаление данных зала
-        private void btnRemovePeripherals_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var selectedPeripherals = (Peripherals)listDataPeripher.SelectedItem;
-                if (selectedPeripherals != null)
-                {
-                    if (MessageBox.Show("Вы действительно хотите удалить выбранный объект из Базы данных?", "Внимание! Данные удалятся навсегда.",
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                    {
-                        AppData.db.Peripherals.Remove(selectedPeripherals);
-                        AppData.db.SaveChanges();
-                        Page_Loaded(null, null);
-                        MessageBox.Show("Данные успешно удалились!", "Операция выполнена", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+
     }
 }

@@ -104,6 +104,7 @@ namespace AppZero.Views.Pages.AdminPages
 
             ListDataSpareParts.ItemsSource = AppData.db.SpareParts.ToList();
             listDataPeripher.ItemsSource = AppData.db.Peripherals.ToList();
+            LoadWarehouseTypes();
         }
 
         // Поиск сотрудников
@@ -575,6 +576,44 @@ namespace AppZero.Views.Pages.AdminPages
         {
             ActionTypeWarehouse window = new ActionTypeWarehouse();
             window.ShowDialog();
+        }
+
+        private void LoadWarehouseTypes()
+        {
+            var types = AppData.db.WarehouseType.ToList();
+            FilterWarehouseType.ItemsSource = types;
+        }
+
+        // Фильтрация по подтипу склада
+        private void FilterSubypeWarehouse_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FilterSubypeWarehouse.SelectedValue != null)
+            {
+                int subtypeId = (int)FilterSubypeWarehouse.SelectedValue;
+                var spareParts = AppData.db.SpareParts.Where(sp => sp.IDSubtypeWarehouse == subtypeId).ToList();
+                ListDataSpareParts.ItemsSource = spareParts;
+            }
+        }
+
+        // Фильтрация по типу склада
+        private void FilterWarehouseType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Сначала очищаем ComboBox подтипов склада
+            FilterSubypeWarehouse.ItemsSource = null;
+            FilterSubypeWarehouse.SelectedItem = null;
+
+            if (FilterWarehouseType.SelectedValue != null)
+            {
+                int typeId = (int)FilterWarehouseType.SelectedValue;
+
+                // Загружаем подтипы, соответствующие выбранному типу
+                var subtypes = AppData.db.SubtypeWarehouseType.Where(st => st.WarehouseTypeId == typeId).ToList();
+                FilterSubypeWarehouse.ItemsSource = subtypes;
+
+                // Фильтруем запчасти по выбранному типу склада
+                var spareParts = AppData.db.SpareParts.Where(sp => sp.IDTypeWarehouse == typeId).ToList();
+                ListDataSpareParts.ItemsSource = spareParts;
+            }
         }
     }
 }

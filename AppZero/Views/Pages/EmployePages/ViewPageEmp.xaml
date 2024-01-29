@@ -217,11 +217,18 @@
 
                         <Grid Grid.Row="1">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
                             </Grid.RowDefinitions>
-                            <DataGrid Name="ListDataSpareParts" AutoGenerateColumns="False" ColumnWidth="*">
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Label Content="Фильтрация по типу:"/>
+                                <ComboBox SelectedValuePath="ID" DisplayMemberPath="Title" Width="250" x:Name="FilterWarehouseType" SelectionChanged="FilterWarehouseType_SelectionChanged"/>
+                                <Label Content="Фильтрация по подтипу:"/>
+                                <ComboBox SelectedValuePath="ID" DisplayMemberPath="Title" Width="250"  x:Name="FilterSubypeWarehouse" SelectionChanged="FilterSubypeWarehouse_SelectionChanged"/>
+                            </StackPanel>
+                            <DataGrid Name="ListDataSpareParts" Grid.Row="1" AutoGenerateColumns="False" ColumnWidth="*">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Номер стеллажа" Binding="{Binding Rack.Number}"/>
                                     <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumber}"/>
@@ -232,26 +239,6 @@
                                     <DataGridTextColumn Header="Дата добавления" Binding="{Binding DateAdded, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <!--Панель кнопок-->
-                            <StackPanel Grid.Row="1"
-                                        Visibility="Collapsed"
-                                        Orientation="Horizontal"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center">
-                                <Button Content="Добавить"
-                                        Width="200"
-                                        Name="btnAdd"
-                                        Click="btnAdd_Click"/>
-                                <Button Content="Редактировать"
-                                        Width="200"
-                                        Name="btnEdit"
-                                        Margin="5,0,5,0"
-                                        Click="btnEdit_Click"/>
-                                <Button Content="Удалить"
-                                        Width="200"
-                                        Name="btnRemove"
-                                        Click="btnRemove_Click"/>
-                            </StackPanel>
                             <StackPanel Grid.Row="2"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Left"
@@ -304,6 +291,7 @@
                                             Width="200"/>
                                 <Button Content="Обновить"
                                         Margin="10,0,0,0"
+                                        Width="150"
                                         Name="btnUpdatePeripher"
                                         Click="btnUpdate_Click"/>
                             </StackPanel>
@@ -311,11 +299,16 @@
 
                         <Grid Grid.Row="1">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
                             </Grid.RowDefinitions>
-                            <DataGrid Name="listDataPeripher" AutoGenerateColumns="False" ColumnWidth="*">
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Label Content="Филтрация по типу:"/>
+                                <ComboBox Width="300" DisplayMemberPath="Title" x:Name="FilterTypeHallComboBox" SelectionChanged="FilterTypeHallComboBox_SelectionChanged"/>
+                            </StackPanel>
+                            <DataGrid Name="listDataPeripher" Grid.Row="1" AutoGenerateColumns="False" ColumnWidth="*">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Номер стеллажа" Binding="{Binding Rack.Number}"/>
                                     <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumberPeripherals}"/>
@@ -325,26 +318,6 @@
                                     <DataGridTextColumn Header="Дата" Binding="{Binding DateAdded}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <!--Панель кнопок-->
-                            <StackPanel Grid.Row="1"
-                                        Visibility="Collapsed"
-                                        Orientation="Horizontal"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center">
-                                <Button Content="Добавить"
-                                        Width="200"
-                                        Name="btnAddPeripherals"
-                                        Click="btnAddPeripherals_Click"/>
-                                <Button Content="Редактировать"
-                                        Width="200"
-                                        Name="btnEditPeripherals"
-                                        Margin="5,0,5,0"
-                                        Click="btnEditPeripherals_Click"/>
-                                <Button Content="Удалить"
-                                        Width="200"
-                                        Name="btnRemovePeripherals"
-                                        Click="btnRemovePeripherals_Click"/>
-                            </StackPanel>
                             <StackPanel Grid.Row="2"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Left"

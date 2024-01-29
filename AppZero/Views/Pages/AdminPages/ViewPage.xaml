@@ -324,14 +324,22 @@
                                         Click="btnUpdate_Click"/>
                             </StackPanel>
                         </StackPanel>
-
                         <Grid Grid.Row="1">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
                                 <RowDefinition Height="40"/>
                             </Grid.RowDefinitions>
-                            <DataGrid Name="ListDataSpareParts" AutoGenerateColumns="False" ColumnWidth="*">
+                            <Grid Grid.Row="0">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Label Content="Фильтрация по типу:"/>
+                                    <ComboBox SelectedValuePath="ID" DisplayMemberPath="Title" Width="250" x:Name="FilterWarehouseType" SelectionChanged="FilterWarehouseType_SelectionChanged"/>
+                                    <Label Content="Фильтрация по подтипу:"/>
+                                    <ComboBox SelectedValuePath="ID" DisplayMemberPath="Title" Width="250"  x:Name="FilterSubypeWarehouse" SelectionChanged="FilterSubypeWarehouse_SelectionChanged"/>
+                                </StackPanel>
+                            </Grid>
+                            <DataGrid Name="ListDataSpareParts" AutoGenerateColumns="False" Grid.Row="1" ColumnWidth="*">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Номер стеллажа" Binding="{Binding Rack.Number}"/>
                                     <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumber}"/>
@@ -343,7 +351,7 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                             <!--Панель кнопок-->
-                            <StackPanel Grid.Row="1"
+                            <StackPanel Grid.Row="2"
                                         Orientation="Horizontal"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center">
@@ -367,7 +375,7 @@
                                         x:Name="btnManageTypeWarehouse"
                                         Click="btnManageTypeWarehouse_Click"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="2"
+                            <StackPanel Grid.Row="3"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
