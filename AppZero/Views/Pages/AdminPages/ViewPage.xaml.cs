@@ -116,13 +116,21 @@ namespace AppZero.Views.Pages.AdminPages
             item.ID.ToString().Contains(txbSearchEmp.Text)).ToList();
         }
 
-        // Поиск Запчастей и Устройств
+        // Поиск по складу
         private void txbSearchDevice_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Поиск по следующим критериям: ID, Номер стеллажа, Номер полки и Количество на складе
-            ListDataSpareParts.ItemsSource = AppData.db.SpareParts.Where(item => item.ID.ToString().Contains(txbSearchDevice.Text) ||
-            item.Rack.Number.Contains(txbSearchDevice.Text) ||
-            item.Count.ToString().Contains(txbSearchDevice.Text)).ToList();
+            try
+            {
+                // Поиск по следующим критериям: ID, Номер стеллажа, Номер полки и Количество на складе
+                ListDataSpareParts.ItemsSource = AppData.db.SpareParts.Where(item => item.ID.ToString().Contains(txbSearchDevice.Text) ||
+                        item.Rack.Number.Contains(txbSearchDevice.Text) || item.WarehouseType.Title.Contains(txbSearchDevice.Text) ||
+                        item.Description.Contains(txbSearchDevice.Text) ||
+                        item.Count.ToString().Contains(txbSearchDevice.Text)).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void sortDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -130,13 +138,23 @@ namespace AppZero.Views.Pages.AdminPages
             ListDataSpareParts.ItemsSource = AppData.db.SpareParts.Where(item => item.DateAdded == sortDate.SelectedDate).ToList();
         }
 
-        // Поиск Периферии
+        // Поиск по залу
         private void txbSearchPeripher_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Поиск по следующим критериям: ID, Номер стеллажа, Номер полки и Количество на складе
-            listDataPeripher.ItemsSource = AppData.db.Peripherals.Where(item => item.ID.ToString().Contains(txbSearchPeripher.Text) ||
-            item.Rack.Number.Contains(txbSearchPeripher.Text) || item.ShellRackNumberPeripherals.Contains(txbSearchPeripher.Text) ||
-            item.Count.ToString().Contains(txbSearchPeripher.Text)).ToList();
+            try
+            {
+                // Поиск по следующим критериям: ID, Номер стеллажа, Номер полки и Количество на складе
+                listDataPeripher.ItemsSource = AppData.db.Peripherals.Where(item => item.ID.ToString().Contains(txbSearchPeripher.Text) ||
+                item.Rack.Number.Contains(txbSearchPeripher.Text) ||
+                item.TypeHall.Titiel.Contains(txbSearchPeripher.Text) ||
+                item.Description.Contains(txbSearchPeripher.Text) ||
+                item.Count.ToString().Contains(txbSearchPeripher.Text)).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
         }
         // Сортировка данных зала по дате
         private void sortDatePeripher_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -151,14 +169,14 @@ namespace AppZero.Views.Pages.AdminPages
             Page_Loaded(null, null);
         }
 
-        // Запчасти
+        // Печать данных склада
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (dtpStartDate.SelectedDate != null && dtpEndDate.SelectedDate != null)
                 {
-                    // Запрос на вывод данных запчастей по указанным параметрам
+                    // Запрос на вывод данных склада по указанным параметрам
                     SparePartsDestination = AppData.db.SpareParts.Where(item => item.DateAdded >= dtpStartDate.SelectedDate && item.DateAdded <= dtpEndDate.SelectedDate).ToList();
                     ExportSparePartsDataPDF();
                 }
@@ -285,7 +303,7 @@ namespace AppZero.Views.Pages.AdminPages
                 word.Quit(Word.WdSaveOptions.wdDoNotSaveChanges);
             }
         }
-        // Периферия
+        // Печать данных зала
         private void btnPrintPeripher_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -305,13 +323,13 @@ namespace AppZero.Views.Pages.AdminPages
                 MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-        // Переход в окно добавления данных запчастей и устройств
+        // Переход в окно добавления данных склада
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             ActionSparePartsWindow actionSparePartsWindow = new ActionSparePartsWindow(new SpareParts());
             actionSparePartsWindow.ShowDialog();
         }
-        // Переход в окно редактирования данных запчастей и устройств
+        // Переход в окно редактирования данных склада
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             var selectedSpareParts = (SpareParts)ListDataSpareParts.SelectedItem;
@@ -368,13 +386,13 @@ namespace AppZero.Views.Pages.AdminPages
                 return;
             }
         }
-        // Переход в окно добавления данных периферии
+        // Переход в окно добавления данных зала
         private void btnAddPeripherals_Click(object sender, RoutedEventArgs e)
         {
             ActionPeripheralsWindow actionPeripheralsWindow = new ActionPeripheralsWindow(new Peripherals());
             actionPeripheralsWindow.ShowDialog();
         }
-        // Переход в окно редактирования данных периферии
+        // Переход в окно редактирования данных зала
         private void btnEditPeripherals_Click(object sender, RoutedEventArgs e)
         {
             var selectedPeripherals = (Peripherals)listDataPeripher.SelectedItem;
@@ -384,7 +402,7 @@ namespace AppZero.Views.Pages.AdminPages
                 actionPeripheralsWindow.ShowDialog();
             }
         }
-        // Удаление данных периферии
+        // Удаление данных зала
         private void btnRemovePeripherals_Click(object sender, RoutedEventArgs e)
         {
             try

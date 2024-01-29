@@ -437,6 +437,7 @@
                                     <DataGridTextColumn Header="Номер стеллажа" Binding="{Binding Rack.Number}"/>
                                     <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumberPeripherals}"/>
                                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
+                                    <DataGridTextColumn Header="Тип" Binding="{Binding TypeHall.Titiel}"/>
                                     <DataGridTextColumn Header="Количество" Binding="{Binding Count}"/>
                                     <DataGridTextColumn Header="Дата" Binding="{Binding DateAdded, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                                 </DataGrid.Columns>

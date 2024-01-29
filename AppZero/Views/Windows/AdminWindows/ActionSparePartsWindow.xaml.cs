@@ -199,8 +199,6 @@ namespace AppZero.Views.Windows.AdminWindows
             return availableShelves;
         }
 
-
-
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
