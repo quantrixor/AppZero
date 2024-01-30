@@ -209,7 +209,7 @@
                                             Width="200"/>
                                 <Button Content="Обновить"
                                         Margin="10,0,0,0"
-                                        Width="100"
+                                        Width="150"
                                         Name="btnUpdate"
                                         Click="btnUpdate_Click"/>
                             </StackPanel>
@@ -306,7 +306,7 @@
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Label Content="Филтрация по типу:"/>
-                                <ComboBox Width="300" DisplayMemberPath="Title" x:Name="FilterTypeHallComboBox" SelectionChanged="FilterTypeHallComboBox_SelectionChanged"/>
+                                <ComboBox Width="300" DisplayMemberPath="Titiel" x:Name="FilterTypeHallComboBox" SelectionChanged="FilterTypeHallComboBox_SelectionChanged"/>
                             </StackPanel>
                             <DataGrid Name="listDataPeripher" Grid.Row="1" AutoGenerateColumns="False" ColumnWidth="*">
                                 <DataGrid.Columns>

@@ -104,6 +104,7 @@ namespace AppZero.Views.Pages.AdminPages
 
             ListDataSpareParts.ItemsSource = AppData.db.SpareParts.ToList();
             listDataPeripher.ItemsSource = AppData.db.Peripherals.ToList();
+            FilterTypeHallComboBox.ItemsSource = AppData.db.TypeHall.ToList();
             LoadWarehouseTypes();
         }
 
@@ -167,6 +168,7 @@ namespace AppZero.Views.Pages.AdminPages
         {
             sortDate.SelectedDate = null;
             sortDatePeripher.SelectedDate = null;
+            FilterTypeHallComboBox.SelectedItem = null;
             Page_Loaded(null, null);
         }
 
@@ -469,8 +471,14 @@ namespace AppZero.Views.Pages.AdminPages
 
                 AppData.db.SaveChanges();
                 MessageBox.Show("Стеллаж добавлен в БД", "Успешно!", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Отключаем обработчик событий перед программной очисткой поля
+                txbCountSt.TextChanged -= txbCountSt_TextChanged;
+
                 txbNumSt.Text = "";
                 txbCountSt.Text = "";
+
+                // Включаем обработчик событий обратно после изменения текста
+                txbCountSt.TextChanged += txbCountSt_TextChanged;
             }
             catch (Exception ex)
             {
@@ -613,6 +621,27 @@ namespace AppZero.Views.Pages.AdminPages
                 // Фильтруем запчасти по выбранному типу склада
                 var spareParts = AppData.db.SpareParts.Where(sp => sp.IDTypeWarehouse == typeId).ToList();
                 ListDataSpareParts.ItemsSource = spareParts;
+            }
+        }
+
+        private void btnManageHallType_Click(object sender, RoutedEventArgs e)
+        {
+            ActionTypeHallWindow actionTypeHallWindow = new ActionTypeHallWindow();
+            actionTypeHallWindow.ShowDialog();
+        }
+
+        // Фильтрация по типу зала
+        private void FilterTypeHallComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedTypeHall = FilterTypeHallComboBox.SelectedItem as TypeHall;
+
+            if (selectedTypeHall != null)
+            {
+                var filteredPeripherals = AppData.db.Peripherals
+                                                   .Where(p => p.IDTypeHall == selectedTypeHall.ID)
+                                                   .ToList();
+
+                listDataPeripher.ItemsSource = filteredPeripherals;
             }
         }
     }

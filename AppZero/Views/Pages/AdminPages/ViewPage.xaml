@@ -10,7 +10,7 @@
       Title="Форма администратора">
 
     <Page.Resources>
-       
+
 
         <Style TargetType="TextBlock">
             <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
@@ -415,7 +415,7 @@
                             <Label Content="Поиск: "/>
                             <TextBox Name="txbSearchPeripher"
                                      TextChanged="txbSearchPeripher_TextChanged"
-                                     Width="250"/>
+                                     Width="150"/>
 
                             <StackPanel Margin="40,0,0,0" VerticalAlignment="Center"
                                         Orientation="Horizontal"
@@ -424,13 +424,17 @@
                                        Content="Выберите дату: "/>
                                 <DatePicker Name="sortDatePeripher"
                                             SelectedDateChanged="sortDatePeripher_SelectedDateChanged"
-                                            Width="200" SelectedDateFormat="Short"/>
+                                            Width="150" SelectedDateFormat="Short"/>
 
                                 <Button Content="Обновить"
                                         Width="100"
                                         Margin="10,0,0,0"
                                         Name="btnUpdatePeripher"
                                         Click="btnUpdate_Click"/>
+                            </StackPanel>
+                            <StackPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Label Content="Филтрация по типу:"/>
+                                <ComboBox Width="150" DisplayMemberPath="Titiel" x:Name="FilterTypeHallComboBox" SelectionChanged="FilterTypeHallComboBox_SelectionChanged"/>
                             </StackPanel>
                         </StackPanel>
 
@@ -468,6 +472,11 @@
                                         Width="200"
                                         Name="btnRemovePeripherals"
                                         Click="btnRemovePeripherals_Click"/>
+                                <Button Content="Управление типами"
+                                        x:Name="btnManageHallType"
+                                        Margin="5,0"
+                                        Width="200"
+                                        Click="btnManageHallType_Click"/>
                             </StackPanel>
                             <StackPanel Grid.Row="2"
                                         Orientation="Horizontal"
@@ -495,20 +504,17 @@
             <TabItem Width="200" Header="Стеллажи и полки">
                 <TabItem.Content>
                     <Grid>
-                        <Grid Grid.Row="1">
-                            <StackPanel HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        >
-                                <TextBlock Text="Номер стеллажа:"/>
-                                <TextBox x:Name="txbNumSt" Margin="0,5" Width="250"/>
-                                <TextBlock Text="Количество полок (мин. 3 - макс. 5):"/>
-                                <TextBox x:Name="txbCountSt" Margin="0,5" Width="250" TextChanged="txbCountSt_TextChanged" />
+                        <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                            <TextBlock Text="Номер стеллажа:"/>
+                            <TextBox x:Name="txbNumSt" Margin="0,5" Width="250"/>
+                            <TextBlock Text="Количество полок (мин. 3 - макс. 5):"/>
+                            <TextBox x:Name="txbCountSt" Margin="0,5" Width="250" TextChanged="txbCountSt_TextChanged" />
 
-                                <Button Name="btnSaveRack"
+                            <Button Name="btnSaveRack"
                                         Content="Сохранить"
                                         Click="btnSaveRack_Click"/>
-                            </StackPanel>
-                        </Grid>
+                        </StackPanel>
                     </Grid>
                 </TabItem.Content>
             </TabItem>

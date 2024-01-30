@@ -1,0 +1,70 @@
+﻿<Window x:Class="AppZero.Views.Windows.AdminWindows.ActionTypeHallWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppZero.Views.Windows.AdminWindows"
+        mc:Ignorable="d"
+        WindowStyle="ToolWindow"
+        WindowStartupLocation="CenterScreen"
+        Title="Управление типами зала" Height="300" Width="650">
+
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+        </Style>
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ButtonDefaultBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ButtonDefaulForeground}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="{DynamicResource DefaultEnterForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource DefaultEnterBackground}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="GridViewColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource DefaultDataGridBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource DefaultDataGridForeground}"/>
+        </Style>
+        <Style TargetType="ListView">
+            <Setter Property="Background" Value="{DynamicResource DefaultDataGridBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource DefaultDataGridForeground}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.6*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Width="200" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="Название типа:"/>
+            <TextBox Margin="5,0" x:Name="txbHallTypeName"/>
+            <Button Content="Сохранить" Margin="5,5,5,0" x:Name="btnSaveTypeHall" Click="btnSaveTypeHall_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0">
+            <ListView Width="400" x:Name="listHallTypeView" SelectionChanged="listHallTypeView_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding ID}"/>
+                        <GridViewColumn Header="Название" Width="120" DisplayMemberBinding="{Binding Titiel}"/>
+                        <GridViewColumn Header="Действия" Width="180">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Width="160" Content="Удалить" Click="RemoveTypeHall_Click"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+    </Grid>
+</Window>
