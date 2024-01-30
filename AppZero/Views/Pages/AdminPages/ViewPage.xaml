@@ -191,27 +191,22 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
                             <TextBlock Text="Имя:"/>
-                            <TextBox x:Name="txbFirstName" Text="{Binding User.FirstName}"/>
+                            <TextBox x:Name="txbFirstName"/>
                             <TextBlock Text="Фамилия:"/>
-                            <TextBox x:Name="txbLastName" Text="{Binding User.LastName}"/>
+                            <TextBox x:Name="txbLastName"/>
                             <TextBlock Text="Отчество:"/>
-                            <TextBox x:Name="txbMiddleName" Text="{Binding User.MiddleName}"/>
+                            <TextBox x:Name="txbMiddleName"/>
                             <TextBlock Text="Должность:"/>
-                            <ComboBox x:Name="cmbPosition" 
-                                      ItemsSource="{Binding Positions}" 
-                                      DisplayMemberPath="Title"
-                                      SelectedItem="{Binding User.Position}"
+                            <ComboBox x:Name="cmbPosition" ItemsSource="{Binding Positions}"
+                                      DisplayMemberPath="Title" SelectedValue="ID"
                                       Text="Hello">
                             </ComboBox>
                             <TextBlock Text="Имя пользователя:"/>
-                            <TextBox x:Name="txbPassword" Text="{Binding SignIn.Username}"/>
+                            <TextBox x:Name="txbPassword"/>
                             <TextBlock Text="Пароль:"/>
-                            <TextBox x:Name="txbUsername" Text="{Binding SignIn.Password}"/>
+                            <TextBox x:Name="txbUsername"/>
                             <TextBlock Text="Роль:"/>
-                            <ComboBox Name="cmbRule"
-                                      ItemsSource="{Binding Rules}"
-                                  DisplayMemberPath="Title"
-                                  SelectedItem="{Binding User.Rule}"></ComboBox>
+                            <ComboBox Name="cmbRule" SelectedValue="IDRole" ItemsSource="{Binding Rules}" DisplayMemberPath="Title"></ComboBox>
                             <Button Content="Сохранить данные"
                                 Margin="0,10,0,0"
                                 Click="btnSave_Click"
@@ -246,7 +241,6 @@
 
                         <Grid Grid.Row="1">
                             <DataGrid Name="ListDataEmp" 
-                                      
                                       IsReadOnly="True" MouseDoubleClick="ListDataEmp_MouseDoubleClick" AutoGenerateColumns="False" ColumnWidth="*">
                                 <DataGrid.RowStyle>
                                     <Style TargetType="DataGridRow">
@@ -266,6 +260,13 @@
                                     <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}"/>
                                     <DataGridTextColumn Header="Отчество" Binding="{Binding MiddleName}"/>
                                     <DataGridTextColumn Header="Должность" Binding="{Binding Position.Title}"/>
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Редактировать" Width="160" Click="ButtonEditUser_Click"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -279,11 +280,6 @@
                                         Width="200"
                                         x:Name="btnDeleteEmp"
                                         Click="btnDeleteEmp_Click"/>
-                                <Button Content="Редактировать"
-                                        Width="200"
-                                        x:Name="btnEditEmp"
-                                        Click="btnEditEmp_Click"
-                                        Margin="10,0,0,0"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
@@ -397,7 +393,6 @@
                     </Grid>
                 </TabItem.Content>
             </TabItem>
-
 
             <TabItem Header="Зал" Width="200">
                 <TabItem.Content>

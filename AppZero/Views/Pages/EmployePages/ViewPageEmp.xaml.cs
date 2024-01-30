@@ -93,7 +93,7 @@ namespace AppZero.Views.Pages.EmployePages
                 var paragrah = word.ActiveDocument.Paragraphs.Add();
                 var tableRange = paragrah.Range;
                 var listDataSpareParts = SparePartsDestination;
-                var table = document.Tables.Add(tableRange, listDataSpareParts.Count + 1, 6);
+                var table = document.Tables.Add(tableRange, listDataSpareParts.Count + 1, 8);
                 table.Range.Font.Size = 10;
                 table.Borders.Enable = 1;
                 table.Title = "Данные склада";

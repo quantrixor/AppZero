@@ -60,14 +60,33 @@ namespace AppZero.Views.Pages.AdminPages
                         throw new Exception("Пользователь: " + SignIn.Username + " уже существует!");
 
                     SignIn.IDRole = AppData.db.Rule.FirstOrDefault(item => item.Title == cmbRule.Text).ID;
+                    SignIn = new SignIn
+                    {
+                        Username = txbUsername.Text,
+                        Password = txbPassword.Text,
+                        Rule = (Rule)cmbRule.SelectedItem
+                    };
                     AppData.db.SignIn.Add(SignIn);
+
+                    User = new User
+                    {
+                        FirstName = txbFirstName.Text,
+                        LastName = txbLastName.Text,
+                        MiddleName = txbMiddleName.Text,
+                        Position = (Position)cmbPosition.SelectedItem
+                    };
 
                     AppData.db.User.Add(User);
                 }
                 if (_selectedItem != null)
                 {
-                    User.Position = cmbPosition.SelectedItem as Position;
-                    User.SignIn.Rule = cmbRule.SelectedItem as Rule;
+                    _selectedItem.FirstName = txbFirstName.Text;
+                    _selectedItem.LastName = txbLastName.Text;
+                    _selectedItem.MiddleName = txbMiddleName.Text;
+                    _selectedItem.SignIn.Username = txbUsername.Text;
+                    _selectedItem.SignIn.Password = txbPassword.Text;
+                    _selectedItem.Position = cmbPosition.SelectedItem as Position;
+                    _selectedItem.SignIn.Rule = cmbRule.SelectedItem as Rule;
                 }
 
                 AppData.db.SaveChanges();
@@ -169,6 +188,8 @@ namespace AppZero.Views.Pages.AdminPages
             sortDate.SelectedDate = null;
             sortDatePeripher.SelectedDate = null;
             FilterTypeHallComboBox.SelectedItem = null;
+            FilterWarehouseType.SelectedItem = null;
+            FilterSubypeWarehouse.SelectedItem = null;
             Page_Loaded(null, null);
         }
 
@@ -211,7 +232,7 @@ namespace AppZero.Views.Pages.AdminPages
                 var paragrah = word.ActiveDocument.Paragraphs.Add();
                 var tableRange = paragrah.Range;
                 var listDataSpareParts = SparePartsDestination;
-                var table = document.Tables.Add(tableRange, listDataSpareParts.Count + 1, 6);
+                var table = document.Tables.Add(tableRange, listDataSpareParts.Count + 1, 8);
                 table.Range.Font.Size = 10;
                 table.Borders.Enable = 1;
                 table.Title = "Данные";
@@ -556,29 +577,6 @@ namespace AppZero.Views.Pages.AdminPages
             }
         }
 
-        private void btnEditEmp_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                _selectedItem = ListDataEmp.SelectedItem as User;
-                if (_selectedItem != null)
-                {
-                    txbFirstName.Text = _selectedItem.FirstName;
-                    txbLastName.Text = _selectedItem.LastName;
-                    txbMiddleName.Text = _selectedItem.MiddleName;
-                    txbUsername.Text = _selectedItem.SignIn.Username;
-                    txbPassword.Text = _selectedItem.SignIn.Password;
-                    User = _selectedItem;
-                    cmbPosition.SelectedItem = Positions.FirstOrDefault(p => p.ID == _selectedItem.IDPosition);
-                    cmbRule.SelectedItem = Rules.FirstOrDefault(r => r.ID == _selectedItem.SignIn.IDRole);
-                    mainTabControl.SelectedIndex = 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
 
         private void btnManageTypeWarehouse_Click(object sender, RoutedEventArgs e)
         {
@@ -642,6 +640,27 @@ namespace AppZero.Views.Pages.AdminPages
                                                    .ToList();
 
                 listDataPeripher.ItemsSource = filteredPeripherals;
+            }
+        }
+
+        private void FillTextBoxUser(User user)
+        {
+            txbLastName.Text = user.LastName;
+            txbFirstName.Text = user.FirstName;
+            txbMiddleName.Text = user.MiddleName;
+            cmbPosition.SelectedItem = user.Position;
+            cmbRule.SelectedItem = user.SignIn.Rule;
+            txbUsername.Text = user.SignIn.Username;
+            txbPassword.Text = user.SignIn.Password;
+            mainTabControl.SelectedIndex = 0;
+        }
+
+        private void ButtonEditUser_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedItem = (User)ListDataEmp.SelectedItem;
+            if(_selectedItem != null)
+            {
+                FillTextBoxUser(_selectedItem);
             }
         }
     }
