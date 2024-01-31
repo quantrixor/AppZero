@@ -303,6 +303,7 @@
     <Resource Include="Resources\sun_light.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="db\dbAppZero beta 3.sql" />
     <Content Include="Model\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model.edmx</DependentUpon>
