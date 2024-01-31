@@ -261,7 +261,7 @@
                     </Grid>
                 </TabItem.Content>
             </TabItem>
-            <!--База учёта периферии-->
+            <!--База учёта Зала-->
             <TabItem Header="Зал">
                 
                 <TabItem.Content>
@@ -302,25 +302,28 @@
                                 <RowDefinition Height="40"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
                             </Grid.RowDefinitions>
-
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Label Content="Филтрация по типу:"/>
-                                <ComboBox Width="300" DisplayMemberPath="Titiel" x:Name="FilterTypeHallComboBox" SelectionChanged="FilterTypeHallComboBox_SelectionChanged"/>
+                            <StackPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Label Content="Фильтрация по типу:"/>
+                                <ComboBox SelectedValuePath="ID" Width="250" DisplayMemberPath="Titiel" x:Name="FilterTypeHallComboBox" SelectionChanged="FilterTypeHallComboBox_SelectionChanged"/>
+                                <Label Content="Фильтрация по подтипу:"/>
+                                <ComboBox SelectedValuePath="ID" Width="250" DisplayMemberPath="Title" x:Name="FilterSubtypeHallComboBox" SelectionChanged="FilterSubtypeHallComboBox_SelectionChanged"/>
                             </StackPanel>
-                            <DataGrid Name="listDataPeripher" Grid.Row="1" AutoGenerateColumns="False" ColumnWidth="*">
+                            <DataGrid Name="listDataPeripher" AutoGenerateColumns="False" Grid.Row="1" ColumnWidth="*">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Номер стеллажа" Binding="{Binding Rack.Number}"/>
                                     <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumberPeripherals}"/>
                                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
                                     <DataGridTextColumn Header="Тип" Binding="{Binding TypeHall.Titiel}"/>
+                                    <DataGridTextColumn Header="Подтип" Binding="{Binding SubtypeHall.Title}"/>
                                     <DataGridTextColumn Header="Количество" Binding="{Binding Count}"/>
-                                    <DataGridTextColumn Header="Дата" Binding="{Binding DateAdded}"/>
+                                    <DataGridTextColumn Header="Дата" Binding="{Binding DateAdded, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <StackPanel Grid.Row="2"
+                            <StackPanel Grid.Row="3"
                                         Orientation="Horizontal"
-                                        HorizontalAlignment="Left"
+                                        HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Margin="10,0,0,0">
                                 <Label Content="Выберите период: "/>

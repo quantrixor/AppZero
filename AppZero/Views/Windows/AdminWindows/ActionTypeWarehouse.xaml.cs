@@ -55,7 +55,6 @@ namespace AppZero.Views.Windows.AdminWindows
 
             if (_selectedType == null)
             {
-                // Возможно, стоит очистить список подтипов, если нет выбранного типа.
                 listSubtypeWarehouseTypes.Clear();
                 return;
             }

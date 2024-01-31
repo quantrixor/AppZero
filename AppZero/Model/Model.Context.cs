@@ -34,6 +34,7 @@ namespace AppZero.Model
         public virtual DbSet<SignIn> SignIn { get; set; }
         public virtual DbSet<SpareParts> SpareParts { get; set; }
         public virtual DbSet<SparePartsShelves> SparePartsShelves { get; set; }
+        public virtual DbSet<SubtypeHall> SubtypeHall { get; set; }
         public virtual DbSet<SubtypeWarehouseType> SubtypeWarehouseType { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TypeHall> TypeHall { get; set; }

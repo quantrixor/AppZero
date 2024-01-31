@@ -12,20 +12,20 @@ namespace AppZero.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SubtypeWarehouseType
+    public partial class SubtypeHall
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SubtypeWarehouseType()
+        public SubtypeHall()
         {
-            this.SpareParts = new HashSet<SpareParts>();
+            this.Peripherals = new HashSet<Peripherals>();
         }
     
         public int ID { get; set; }
         public string Title { get; set; }
-        public Nullable<int> WarehouseTypeId { get; set; }
+        public int IDTypeHall { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SpareParts> SpareParts { get; set; }
-        public virtual WarehouseType WarehouseType { get; set; }
+        public virtual ICollection<Peripherals> Peripherals { get; set; }
+        public virtual TypeHall TypeHall { get; set; }
     }
 }

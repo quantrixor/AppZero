@@ -154,6 +154,9 @@
     <Compile Include="Model\SparePartsShelves.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\SubtypeHall.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\SubtypeWarehouseType.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

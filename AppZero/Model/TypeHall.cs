@@ -18,6 +18,7 @@ namespace AppZero.Model
         public TypeHall()
         {
             this.Peripherals = new HashSet<Peripherals>();
+            this.SubtypeHall = new HashSet<SubtypeHall>();
         }
     
         public int ID { get; set; }
@@ -25,5 +26,7 @@ namespace AppZero.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Peripherals> Peripherals { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SubtypeHall> SubtypeHall { get; set; }
     }
 }

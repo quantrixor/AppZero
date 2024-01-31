@@ -210,18 +210,25 @@ namespace AppZero.Views.Pages.EmployePages
                 MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-        // Фильтрация по типу зала
+        
+        // Фильтрация по типу Зала
         private void FilterTypeHallComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedTypeHall = FilterTypeHallComboBox.SelectedItem as TypeHall;
+            // Сначала очищаем ComboBox подтипов склада
+            FilterSubtypeHallComboBox.ItemsSource = null;
+            FilterSubtypeHallComboBox.SelectedItem = null;
 
-            if (selectedTypeHall != null)
+            if (FilterTypeHallComboBox.SelectedValue != null)
             {
-                var filteredPeripherals = AppData.db.Peripherals
-                                                   .Where(p => p.IDTypeHall == selectedTypeHall.ID)
-                                                   .ToList();
+                int typeId = (int)FilterTypeHallComboBox.SelectedValue;
 
-                listDataPeripher.ItemsSource = filteredPeripherals;
+                // Загружаем подтипы, соответствующие выбранному типу
+                var subtypes = AppData.db.SubtypeHall.Where(st => st.IDTypeHall == typeId).ToList();
+                FilterSubtypeHallComboBox.ItemsSource = subtypes;
+
+                // Фильтруем запчасти по выбранному типу зала
+                var peripherals = AppData.db.Peripherals.Where(sp => sp.IDTypeHall == typeId).ToList();
+                listDataPeripher.ItemsSource = peripherals;
             }
         }
 
@@ -263,5 +270,14 @@ namespace AppZero.Views.Pages.EmployePages
             }
         }
 
+        private void FilterSubtypeHallComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FilterSubtypeHallComboBox.SelectedValue != null)
+            {
+                int subtypeId = (int)FilterSubtypeHallComboBox.SelectedValue;
+                var peripherals = AppData.db.Peripherals.Where(sp => sp.IDSubtypeHall == subtypeId).ToList();
+                listDataPeripher.ItemsSource = peripherals;
+            }
+        }
     }
 }

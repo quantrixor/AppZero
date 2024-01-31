@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStyle="ToolWindow"
         WindowStartupLocation="CenterScreen"
-        Title="Управление типами зала" Height="300" Width="650">
+        Title="Управление типами зала" Height="400" Width="750">
 
     <Window.Resources>
         <Style TargetType="Label">
@@ -43,28 +43,54 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Width="200" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label Content="Название типа:"/>
-            <TextBox Margin="5,0" x:Name="txbHallTypeName"/>
-            <Button Content="Сохранить" Margin="5,5,5,0" x:Name="btnSaveTypeHall" Click="btnSaveTypeHall_Click"/>
-        </StackPanel>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <!--Работа с типами зала-->
+            <StackPanel Width="260" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Название типа:"/>
+                <TextBox x:Name="txbHallTypeName"/>
+                <Button Content="Сохранить" Margin="0,5" x:Name="btnSaveTypeHall" Click="btnSaveTypeHall_Click"/>
+                <Button Content="Удалить" Click="RemoveTypeHall_Click"/>
+            </StackPanel>
+            <!--Работа с подтипами зала-->
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="260">
+                <Label Content="Название подтипа:"/>
+                <Label x:Name="lblTypeHall" Content="Выберите тип" Foreground="DarkGray" FontWeight="Bold" ContentStringFormat="Выбранный тип: {0}"/>
+                <TextBox x:Name="txbSubtypeHallTitle"/>
+                <Button Content="Сохранить" Margin="0,5" x:Name="btnSaveSubtypeHall" Click="btnSaveSubtypeHall_Click"/>
+                <Button Content="Удалить" Click="RemoveSubtypeHall_Click"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <!--Отображение типов зала-->
+            <Grid Grid.Row="0" Margin="0,10,0,10">
+                <ListView Width="400" x:Name="listHallTypeView" SelectionChanged="listHallTypeView_SelectionChanged" ItemsSource="{Binding typeHalls}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding ID}"/>
+                            <GridViewColumn Header="Название" Width="120" DisplayMemberBinding="{Binding Titiel}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
 
-        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0">
-            <ListView Width="400" x:Name="listHallTypeView" SelectionChanged="listHallTypeView_SelectionChanged">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding ID}"/>
-                        <GridViewColumn Header="Название" Width="120" DisplayMemberBinding="{Binding Titiel}"/>
-                        <GridViewColumn Header="Действия" Width="180">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Width="160" Content="Удалить" Click="RemoveTypeHall_Click"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </StackPanel>
+            <Grid Grid.Row="1" Margin="0,10,0,10">
+                <ListView x:Name="listSubtypeHallView" SelectionChanged="listSubtypeHallView_SelectionChanged" ItemsSource="{Binding subtypeHalls}" Width="400">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" Width="100"/>
+                            <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Title}" Width="120"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

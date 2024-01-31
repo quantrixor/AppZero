@@ -410,7 +410,7 @@
                             <Label Content="Поиск: "/>
                             <TextBox Name="txbSearchPeripher"
                                      TextChanged="txbSearchPeripher_TextChanged"
-                                     Width="150"/>
+                                     Width="250"/>
 
                             <StackPanel Margin="40,0,0,0" VerticalAlignment="Center"
                                         Orientation="Horizontal"
@@ -419,7 +419,7 @@
                                        Content="Выберите дату: "/>
                                 <DatePicker Name="sortDatePeripher"
                                             SelectedDateChanged="sortDatePeripher_SelectedDateChanged"
-                                            Width="150" SelectedDateFormat="Short"/>
+                                            Width="250" SelectedDateFormat="Short"/>
 
                                 <Button Content="Обновить"
                                         Width="100"
@@ -427,30 +427,33 @@
                                         Name="btnUpdatePeripher"
                                         Click="btnUpdate_Click"/>
                             </StackPanel>
-                            <StackPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Label Content="Филтрация по типу:"/>
-                                <ComboBox Width="150" DisplayMemberPath="Titiel" x:Name="FilterTypeHallComboBox" SelectionChanged="FilterTypeHallComboBox_SelectionChanged"/>
-                            </StackPanel>
                         </StackPanel>
-
                         <Grid Grid.Row="1">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="40"/>
                                 <RowDefinition Height="40"/>
                             </Grid.RowDefinitions>
-                            <DataGrid Name="listDataPeripher" AutoGenerateColumns="False" ColumnWidth="*">
+                            <StackPanel Margin="10,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Label Content="Фильтрация по типу:"/>
+                                <ComboBox SelectedValuePath="ID" Width="250" DisplayMemberPath="Titiel" x:Name="FilterTypeHallComboBox" SelectionChanged="FilterTypeHallComboBox_SelectionChanged"/>
+                                <Label Content="Фильтрация по подтипу:"/>
+                                <ComboBox SelectedValuePath="ID" Width="250" DisplayMemberPath="Title" x:Name="FilterSubtypeHallComboBox" SelectionChanged="FilterSubtypeHallComboBox_SelectionChanged"/>
+                            </StackPanel>
+                            <DataGrid Name="listDataPeripher" AutoGenerateColumns="False" Grid.Row="1" ColumnWidth="*">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Номер стеллажа" Binding="{Binding Rack.Number}"/>
                                     <DataGridTextColumn Header="Номер полки" Binding="{Binding ShellRackNumberPeripherals}"/>
                                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
                                     <DataGridTextColumn Header="Тип" Binding="{Binding TypeHall.Titiel}"/>
+                                    <DataGridTextColumn Header="Подтип" Binding="{Binding SubtypeHall.Title}"/>
                                     <DataGridTextColumn Header="Количество" Binding="{Binding Count}"/>
                                     <DataGridTextColumn Header="Дата" Binding="{Binding DateAdded, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <!--Панель кнопок-->
-                            <StackPanel Grid.Row="1"
+                            <StackPanel Grid.Row="2"
                                         Orientation="Horizontal"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center">
@@ -473,7 +476,7 @@
                                         Width="200"
                                         Click="btnManageHallType_Click"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="2"
+                            <StackPanel Grid.Row="3"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"

@@ -26,8 +26,10 @@ namespace AppZero.Model
         public int Count { get; set; }
         public System.DateTime DateAdded { get; set; }
         public int IDTypeHall { get; set; }
+        public Nullable<int> IDSubtypeHall { get; set; }
     
         public virtual Rack Rack { get; set; }
+        public virtual SubtypeHall SubtypeHall { get; set; }
         public virtual TypeHall TypeHall { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PeripheralShelf> PeripheralShelf { get; set; }

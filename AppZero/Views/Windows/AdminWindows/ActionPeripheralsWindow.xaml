@@ -130,7 +130,9 @@
             <Label Content="Описание: "/>
             <TextBox Name="txbDescription" Text="{Binding Peripherals.Description}" Height="35" TextWrapping="Wrap"/>
             <Label Content="Тип:"/>
-            <ComboBox x:Name="cmbHallType" ItemsSource="{Binding typeHalls}" SelectedItem="{Binding Peripherals.TypeHall}" DisplayMemberPath="Titiel"/>
+            <ComboBox x:Name="cmbHallType" ItemsSource="{Binding typeHalls}" SelectedItem="{Binding Peripherals.TypeHall}" DisplayMemberPath="Titiel" SelectionChanged="cmbHallType_SelectionChanged"/>
+            <Label Content="Подтип:"/>
+            <ComboBox x:Name="cmbHallSubtype" ItemsSource="{Binding typeHalls}" SelectedItem="{Binding Peripherals.SubtypeHall}" DisplayMemberPath="Title"/>
             <Label Content="Количество: "/>
             <TextBox Text="{Binding Peripherals.Count}" Name="txbCount" PreviewTextInput="TextBox_PreviewTextInput"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">

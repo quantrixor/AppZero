@@ -147,5 +147,29 @@ namespace AppZero.Views.Windows.AdminWindows
 
             }
         }
+
+        private void cmbHallType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Проверяем, выбран ли элемент
+            var selectedType = cmbHallType.SelectedItem as TypeHall;
+            if (selectedType != null)
+            {
+                // Тут код для запроса подтипов из базы данных
+                var subtypes = GetSubtypesForType(selectedType.ID);
+
+                // Устанавливаем источник данных для cmbHallSubtype
+                cmbHallSubtype.ItemsSource = subtypes;
+
+                // Очищаем предыдущий выбор подтипа
+                cmbHallSubtype.SelectedItem = null;
+            }
+        }
+
+        // Метод для получения подтипов на основе ID типа
+        private List<SubtypeHall> GetSubtypesForType(int typeId)
+        {
+             return AppData.db.SubtypeHall.Where(s => s.IDTypeHall == typeId).ToList();
+        }
+
     }
 }
