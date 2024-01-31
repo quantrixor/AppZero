@@ -101,6 +101,10 @@ namespace AppZero.Views.Pages.AdminPages
             {
                 CatchException.DisplayValidationErrors(ex);
             }
+            finally
+            {
+                _selectedItem = null;
+            }
         }
         // Очистка всех значений из полей
         private void ClearUserData()

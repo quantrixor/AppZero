@@ -41,6 +41,8 @@ namespace AppZero.Views.Windows.AdminWindows
                 // Это повторный клик на уже выбранный элемент
                 ((ListView)sender).SelectedItem = null;
                 selectedTypeHall = null;
+                selectedSubtypeItem = null;
+                GetSubtypeHall();
                 txbHallTypeName.Clear();
                 lblTypeHall.Content = "Выберите тип";
                 e.Handled = true;
@@ -101,6 +103,9 @@ namespace AppZero.Views.Windows.AdminWindows
             finally
             {
                 txbSubtypeHallTitle.Clear();
+                listSubtypeHallView = null;
+                lblTypeHall.Content = "Выберите тип";
+                selectedSubtypeItem = null;
             }
         }
         private void listHallTypeView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -167,25 +172,40 @@ namespace AppZero.Views.Windows.AdminWindows
         }
         private void LoadData()
         {
-            typeHalls.Clear();
-            var typeHallsCollection = AppData.db.TypeHall.ToList();
-            foreach (var item in typeHallsCollection)
+            try
             {
-                typeHalls.Add(item);
+                typeHalls.Clear();
+                var typeHallsCollection = AppData.db.TypeHall.ToList();
+                foreach (var item in typeHallsCollection)
+                {
+                    typeHalls.Add(item);
+                }
             }
+            catch (DbEntityValidationException ex)
+            {
+                CatchException.DisplayValidationErrors(ex);
+            }
+
         }
         private void GetSubtypeHall()
         {
-            subtypeHalls.Clear();
-            if (selectedTypeHall == null)
+            try
             {
                 subtypeHalls.Clear();
-                return;
+                if (selectedTypeHall == null)
+                {
+                    subtypeHalls.Clear();
+                    return;
+                }
+                var subtypeHallsCollection = AppData.db.SubtypeHall.Where(item => item.IDTypeHall == selectedTypeHall.ID).ToList();
+                foreach (var item in subtypeHallsCollection)
+                {
+                    subtypeHalls.Add(item);
+                }
             }
-            var subtypeHallsCollection = AppData.db.SubtypeHall.Where(item => item.IDTypeHall == selectedTypeHall.ID).ToList();
-            foreach(var item in subtypeHallsCollection)
+            catch (DbEntityValidationException ex)
             {
-                subtypeHalls.Add(item);
+                CatchException.DisplayValidationErrors(ex);
             }
         }
 
@@ -214,6 +234,7 @@ namespace AppZero.Views.Windows.AdminWindows
             finally
             {
                 txbSubtypeHallTitle.Clear();
+                selectedTypeHall = null;
             }
         }
         private SubtypeHall selectedSubtypeItem = null;
@@ -263,6 +284,7 @@ namespace AppZero.Views.Windows.AdminWindows
             finally
             {
                 txbSubtypeHallTitle.Clear();
+                selectedSubtypeItem = null;
             }
         }
 
