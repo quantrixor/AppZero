@@ -20,9 +20,12 @@ namespace AppZero.Views.Pages.EmployePages
     {
         public List<SpareParts> SparePartsDestination = new List<SpareParts>();
         public List<Peripherals> PeripheralsDestination = new List<Peripherals>();
-        public ViewPageEmp()
+        public User CurrentUser { get; set; }
+        public ViewPageEmp(User user)
         {
             InitializeComponent();
+            CurrentUser = user;
+            this.DataContext = this;
         }
         // Поиск данных по складу
         private void txbSearchDevice_TextChanged(object sender, TextChangedEventArgs e)
@@ -90,20 +93,39 @@ namespace AppZero.Views.Pages.EmployePages
             try
             {
                 var document = word.Documents.Add();
+                var documentStart = document.Content.Start;
+
+                // Руководителю ООО «Экострой»
+                var headerTo = document.Range(documentStart);
+                headerTo.Text = "Руководителю ООО «Экострой»\nОт";
+                headerTo.Font.Size = 14;
+                headerTo.Font.Bold = 1;
+                headerTo.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight;
+                headerTo.InsertParagraphAfter();
+
+                // Отчет по складу
+                var headerTitle = headerTo.Paragraphs.Add();
+                headerTitle.Range.Text = "Отчет по складу";
+                headerTitle.Range.Font.Size = 14;
+                headerTitle.Range.ParagraphFormat.SpaceBefore = 6;
+                headerTitle.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                headerTitle.Range.InsertParagraphAfter();
+
                 var paragrah = word.ActiveDocument.Paragraphs.Add();
                 var tableRange = paragrah.Range;
                 var listDataSpareParts = SparePartsDestination;
                 var table = document.Tables.Add(tableRange, listDataSpareParts.Count + 1, 8);
                 table.Range.Font.Size = 10;
                 table.Borders.Enable = 1;
-                table.Title = "Данные склада";
+                table.Title = "Данные";
                 table.Cell(1, 1).Range.Text = "Номер стеллажа";
-                table.Cell(1, 2).Range.Text = "Номер полки";
+                table.Cell(1, 2).Range.Text = "Номера полок";
                 table.Cell(1, 3).Range.Text = "Описание";
                 table.Cell(1, 4).Range.Text = "Тип";
                 table.Cell(1, 5).Range.Text = "Подтип";
                 table.Cell(1, 6).Range.Text = "Количество";
                 table.Cell(1, 7).Range.Text = "Дата";
+                table.Cell(1, 8).Range.Text = "Составитель";
 
                 int i = 2;
                 foreach (var item in listDataSpareParts)
@@ -115,9 +137,48 @@ namespace AppZero.Views.Pages.EmployePages
                     table.Cell(i, 5).Range.Text = item.SubtypeWarehouseType.Title;
                     table.Cell(i, 6).Range.Text = item.Count.ToString();
                     table.Cell(i, 7).Range.Text = item.DateAdded.ToString();
+                    table.Cell(i, 8).Range.Text = $"{CurrentUser.LastName} {CurrentUser.FirstName} {CurrentUser.MiddleName}";
                     i++;
                 }
-                document.SaveAs2($"{Environment.CurrentDirectory}\\EmpData.pdf", Word.WdSaveFormat.wdFormatPDF);
+                document.Content.Paragraphs.Last.Range.InsertParagraphAfter();
+                document.Content.Paragraphs.Last.Range.ParagraphFormat.SpaceAfter = 6;
+
+                // Переход к концу документа перед добавлением подписей
+                Word.Range endOfDoc = document.Content;
+                endOfDoc.Collapse(Word.WdCollapseDirection.wdCollapseEnd);
+
+                // Функция для добавления подписи
+                void AddSignatureLine(string labelText)
+                {
+                    Word.Paragraph paragraph = document.Content.Paragraphs.Add();
+                    paragraph.Range.Text = labelText;
+                    paragraph.Format.LineSpacing = 12;
+                    paragraph.Range.Font.Bold = 0;
+                    paragraph.Range.Font.Underline = Word.WdUnderline.wdUnderlineNone;
+                    paragraph.Range.Font.Size = 14;
+                    paragraph.Range.ParagraphFormat.SpaceAfter = 0;
+                    paragraph.Range.ParagraphFormat.SpaceBefore = 0;
+                    paragraph.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                    paragraph.Range.InsertParagraphAfter();
+                }
+
+                // Добавление строк подписи
+                AddSignatureLine("ФИО принявшего: _______________________________");
+                AddSignatureLine("Подпись составившего отчет: ______________________");
+                AddSignatureLine("Подпись принявшего отчет:   ______________________");
+
+                // Добавление даты
+                Word.Paragraph dateParagraph = document.Content.Paragraphs.Add();
+                dateParagraph.Range.Text = "Дата: " + DateTime.Now.ToString("dd.MM.yyyy");
+                dateParagraph.Range.Font.Bold = 0;
+                dateParagraph.Range.Font.Underline = Word.WdUnderline.wdUnderlineNone;
+                dateParagraph.Range.ParagraphFormat.SpaceAfter = 0;
+                dateParagraph.Range.ParagraphFormat.SpaceBefore = 6;
+                dateParagraph.Range.Font.Bold = 1;
+                dateParagraph.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                dateParagraph.Range.InsertParagraphAfter();
+
+                document.SaveAs2($"{Environment.CurrentDirectory}\\Data.pdf", Word.WdSaveFormat.wdFormatPDF);
                 //document.PageSetup.Orientation = Word.WdOrientation.wdOrientLandscape;
                 document.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
                 word.Quit(Word.WdSaveOptions.wdDoNotSaveChanges);
@@ -135,10 +196,28 @@ namespace AppZero.Views.Pages.EmployePages
             try
             {
                 var document = word.Documents.Add();
+
+                var documentStart = document.Content.Start;
+                // Руководителю ООО «Экострой»
+                var headerTo = document.Range(documentStart);
+                headerTo.Text = "Руководителю ООО «Экострой»\nОт";
+                headerTo.Font.Size = 14;
+                headerTo.Font.Bold = 1;
+                headerTo.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight;
+                headerTo.InsertParagraphAfter();
+
+                // Отчет по складу
+                var headerTitle = headerTo.Paragraphs.Add();
+                headerTitle.Range.Text = "Отчет по залу";
+                headerTitle.Range.Font.Size = 14;
+                headerTitle.Range.ParagraphFormat.SpaceBefore = 6;
+                headerTitle.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                headerTitle.Range.InsertParagraphAfter();
+
                 var paragrah = word.ActiveDocument.Paragraphs.Add();
                 var tableRange = paragrah.Range;
                 var listDataSpareParts = PeripheralsDestination;
-                var table = document.Tables.Add(tableRange, listDataSpareParts.Count + 1, 5);
+                var table = document.Tables.Add(tableRange, listDataSpareParts.Count + 1, 6);
                 table.Range.Font.Size = 10;
                 table.Borders.Enable = 1;
                 table.Title = "Данные";
@@ -147,6 +226,7 @@ namespace AppZero.Views.Pages.EmployePages
                 table.Cell(1, 3).Range.Text = "Описание";
                 table.Cell(1, 4).Range.Text = "Количество";
                 table.Cell(1, 5).Range.Text = "Дата";
+                table.Cell(1, 6).Range.Text = "Составитель";
 
                 int i = 2;
                 foreach (var item in listDataSpareParts)
@@ -156,9 +236,49 @@ namespace AppZero.Views.Pages.EmployePages
                     table.Cell(i, 3).Range.Text = item.Description;
                     table.Cell(i, 4).Range.Text = item.Count.ToString();
                     table.Cell(i, 5).Range.Text = item.DateAdded.ToString();
+                    table.Cell(i, 6).Range.Text = $"{CurrentUser.LastName} {CurrentUser.FirstName} {CurrentUser.MiddleName}";
                     i++;
                 }
-                document.SaveAs2($"{Environment.CurrentDirectory}\\EmpDataPeripher.pdf", Word.WdSaveFormat.wdFormatPDF);
+
+                document.Content.Paragraphs.Last.Range.InsertParagraphAfter();
+                document.Content.Paragraphs.Last.Range.ParagraphFormat.SpaceAfter = 6;
+
+                // Переход к концу документа перед добавлением подписей
+                Word.Range endOfDoc = document.Content;
+                endOfDoc.Collapse(Word.WdCollapseDirection.wdCollapseEnd);
+
+                // Функция для добавления подписи
+                void AddSignatureLine(string labelText)
+                {
+                    Word.Paragraph paragraph = document.Content.Paragraphs.Add();
+                    paragraph.Range.Text = labelText;
+                    paragraph.Format.LineSpacing = 12;
+                    paragraph.Range.Font.Bold = 0;
+                    paragraph.Range.Font.Underline = Word.WdUnderline.wdUnderlineNone;
+                    paragraph.Range.Font.Size = 14;
+                    paragraph.Range.ParagraphFormat.SpaceAfter = 0;
+                    paragraph.Range.ParagraphFormat.SpaceBefore = 0;
+                    paragraph.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                    paragraph.Range.InsertParagraphAfter();
+                }
+
+                // Добавление строк подписи
+                AddSignatureLine("ФИО принявшего: _______________________________");
+                AddSignatureLine("Подпись составившего отчет: ______________________");
+                AddSignatureLine("Подпись принявшего отчет: ______________________");
+
+                // Добавление даты
+                Word.Paragraph dateParagraph = document.Content.Paragraphs.Add();
+                dateParagraph.Range.Text = "Дата: " + DateTime.Now.ToString("dd.MM.yyyy");
+                dateParagraph.Range.Font.Bold = 0;
+                dateParagraph.Range.Font.Underline = Word.WdUnderline.wdUnderlineNone;
+                dateParagraph.Range.ParagraphFormat.SpaceAfter = 0;
+                dateParagraph.Range.ParagraphFormat.SpaceBefore = 6;
+                dateParagraph.Range.Font.Bold = 1;
+                dateParagraph.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                dateParagraph.Range.InsertParagraphAfter();
+
+                document.SaveAs2($"{Environment.CurrentDirectory}\\DataPeripher.pdf", Word.WdSaveFormat.wdFormatPDF);
                 //document.PageSetup.Orientation = Word.WdOrientation.wdOrientLandscape;
                 document.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
                 word.Quit(Word.WdSaveOptions.wdDoNotSaveChanges);

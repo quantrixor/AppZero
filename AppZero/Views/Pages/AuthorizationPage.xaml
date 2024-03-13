@@ -29,6 +29,19 @@
                     </Style>
                 </Button.Resources>
             </Button>
+            <Button IsDefault="True"
+                    Content="О программе"
+                    Name="btnAbdout"
+                    Click="btnAbdout_Click"
+                    Margin="0,5,0,0"
+                    Background="{DynamicResource ButtonDefaultBackground}"
+                    Foreground="{DynamicResource ButtonDefaulForeground}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </StackPanel>
     </Grid>
 </Page>

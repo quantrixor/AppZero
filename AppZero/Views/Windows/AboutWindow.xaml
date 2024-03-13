@@ -1,0 +1,14 @@
+﻿<Window x:Class="AppZero.Views.Windows.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppZero.Views.Windows"
+        mc:Ignorable="d" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen"
+        Title="О программе" Height="300" Width="400">
+    <StackPanel Margin="10">
+        <TextBlock Text="StoreM" FontWeight="Bold" FontSize="16" TextAlignment="Center" />
+        <TextBlock Text="Это программное обеспечение для эффективного учета и управления строительными материалами на складе." TextWrapping="Wrap" Margin="0,10,0,0" />
+        <TextBlock Text="Программа позволяет отслеживать поступление и расход материалов, контролировать остатки на складе, проводить инвентаризацию, формировать отчеты и анализировать данные для оптимизации процессов хранения и закупок." TextWrapping="Wrap" />
+    </StackPanel>
+</Window>

@@ -3,6 +3,7 @@ using AppZero.Model;
 using AppZero.Settings;
 using AppZero.Views.Pages.AdminPages;
 using AppZero.Views.Pages.EmployePages;
+using AppZero.Views.Windows;
 using System;
 using System.Linq;
 using System.Windows;
@@ -36,7 +37,7 @@ namespace AppZero.Views.Pages
                             
                             break;
                         case "U":
-                            NavigationService.Navigate(new ViewPageEmp());
+                            NavigationService.Navigate(new ViewPageEmp(currentUser.User.FirstOrDefault(item => item.IDSignIn == currentUser.ID)));
                             
                             break;
                         default:
@@ -52,6 +53,12 @@ namespace AppZero.Views.Pages
             {
                 MessageBox.Show(ex.Message, "Произошла ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void btnAbdout_Click(object sender, RoutedEventArgs e)
+        {
+            AboutWindow about = new AboutWindow();
+            about.ShowDialog();
         }
     }
 }

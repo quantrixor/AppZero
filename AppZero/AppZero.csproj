@@ -175,6 +175,9 @@
     <Compile Include="Settings\CatchException.cs" />
     <Compile Include="Settings\Logger.cs" />
     <Compile Include="Settings\ReturnIDObject.cs" />
+    <Compile Include="Views\Windows\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\AdminWindows\ActionTypeHallWindow.xaml.cs">
       <DependentUpon>ActionTypeHallWindow.xaml</DependentUpon>
     </Compile>
@@ -201,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Pages\EmployePages\ViewPageEmp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
